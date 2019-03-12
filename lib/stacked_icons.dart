@@ -15,12 +15,8 @@ class AppBackground extends StatelessWidget {
         begin: Alignment.topRight,
         end: Alignment.bottomLeft,
         // Add one stop for each color. Stops should increase from 0 to 1
-        // stops: [0.5, 0.5],
-        // colors: [
-        //   const Color(0xFFFFFFFF),
-        //   const Color(0xFFc78990),
-        // ]
-        stops: [0.6, 0.4, 0.9, 0.3],
+        // stops: [0.5, 0.8, 0.9, 0.3],
+        stops: [0.6, 0.2, 1.0, 0.3],
         colors: [
           // Colors are easy thanks to Flutter's Colors class.
           const Color(0xFFe6e6e6),
@@ -80,7 +76,7 @@ class AppName extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Padding(
-          padding: const EdgeInsets.only(top: 8.0, bottom: 80.0),
+          padding: const EdgeInsets.only(top: 8.0, bottom: 30.0),
           child: new Text(
             "Kolas Rail",
             style: new TextStyle(

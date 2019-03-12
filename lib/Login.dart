@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import 'stacked_icons.dart';
+import 'package:flutter/services.dart';
 
 class Login extends StatelessWidget {
   final String title;
@@ -38,6 +39,7 @@ class LoginPageContent extends StatefulWidget {
 
 class LoginState extends State<LoginPageContent> {
   final TextEditingController _textController = new TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -46,7 +48,7 @@ class LoginState extends State<LoginPageContent> {
         new StackedIcons(),
         new AppName(),
         new Container(
-          width: 380.0,
+          width: MediaQuery.of(context).size.width - 30,
           height: 300.0,
           decoration: new BoxDecoration(
               borderRadius: new BorderRadius.circular(10.0),
@@ -79,16 +81,19 @@ class LoginState extends State<LoginPageContent> {
               Padding(
                 padding:
                     const EdgeInsets.only(left: 20.0, right: 20.0, top: 30.0),
-                child: Container(
-                  alignment: Alignment.center,
-                  height: 60.0,
-                  decoration: new BoxDecoration(
-                      color: const Color(0xFFff8b54),
-                      borderRadius: new BorderRadius.circular(5.0)),
-                  child: new Text(
-                    "Signin",
-                    style: new TextStyle(fontSize: 20.0, color: Colors.white),
-                  ),
+                child: GestureDetector(
+                  onTap: () {print('I am pressed');},
+                  child: Container(
+                    alignment: Alignment.center,
+                    height: 60.0,
+                    decoration: new BoxDecoration(
+                        color: const Color(0xFFff8b54),
+                        borderRadius: new BorderRadius.circular(5.0)),
+                    child: new Text(
+                      "SignIn",
+                      style: new TextStyle(fontSize: 20.0, color: Colors.white),
+                    ),
+                  )
                 ),
               ),
 
@@ -111,6 +116,8 @@ class LoginState extends State<LoginPageContent> {
       ],
     );
   }
+
+  
 }
 
 // class CustomLoginPage extends StatefulWidget {

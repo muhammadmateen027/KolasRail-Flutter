@@ -1,0 +1,1 @@
+export PATH=/Users/muhammadmateen/downloads/flutter/flutter-2/bin:$PATH

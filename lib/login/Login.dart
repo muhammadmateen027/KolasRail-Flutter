@@ -1,6 +1,8 @@
 import "package:flutter/material.dart";
-import 'stacked_icons.dart';
 import 'package:flutter/services.dart';
+
+import '../constants/stacked_icons.dart';
+import '../delivery_list/listview.dart';
 
 class Login extends StatelessWidget {
   final String title;
@@ -82,34 +84,32 @@ class LoginState extends State<LoginPageContent> {
                 padding:
                     const EdgeInsets.only(left: 20.0, right: 20.0, top: 30.0),
                 child: GestureDetector(
-                  onTap: () {print('I am pressed');},
-                  child: Container(
-                    alignment: Alignment.center,
-                    height: 60.0,
-                    decoration: new BoxDecoration(
-                        color: const Color(0xFFff8b54),
-                        borderRadius: new BorderRadius.circular(5.0)),
-                    child: new Text(
-                      "SignIn",
-                      style: new TextStyle(fontSize: 20.0, color: Colors.white),
-                    ),
-                  )
-                ),
-              ),
-
-              Padding(
-                    padding: const EdgeInsets.only(
-                        left: 20.0, right: 20.0, top: 10.0),
-                    child: new Container(
+                    onTap: () => _onLoginTapped(context),
+                    child: Container(
                       alignment: Alignment.center,
                       height: 60.0,
+                      decoration: new BoxDecoration(
+                          color: const Color(0xFFff8b54),
+                          borderRadius: new BorderRadius.circular(5.0)),
                       child: new Text(
-                        "Forgot password?",
-                        style: new TextStyle(
-                            fontSize: 17.0, color: Colors.black54),
+                        "SignIn",
+                        style:
+                            new TextStyle(fontSize: 20.0, color: Colors.white),
                       ),
-                    ),
-                  )
+                    )),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.only(left: 20.0, right: 20.0, top: 10.0),
+                child: new Container(
+                  alignment: Alignment.center,
+                  height: 60.0,
+                  child: new Text(
+                    "Forgot password?",
+                    style: new TextStyle(fontSize: 17.0, color: Colors.black54),
+                  ),
+                ),
+              )
             ],
           ),
         )
@@ -117,7 +117,13 @@ class LoginState extends State<LoginPageContent> {
     );
   }
 
-  
+  void _onLoginTapped(BuildContext context) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => new ListPage(title: 'Lessons'),
+        ));
+  }
 }
 
 // class CustomLoginPage extends StatefulWidget {

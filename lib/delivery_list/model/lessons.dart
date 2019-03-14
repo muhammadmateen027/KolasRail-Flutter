@@ -55,7 +55,50 @@ class Lesson {
           address: "KL, Malaysia.",
           status: "Pending",
           color: 0xFFff8b54),
-          
+      Lesson(
+          title: "18 - 1234",
+          box_label: "Box Label",
+          client_name: "John Doe",
+          address: "KL, Malaysia.",
+          status: "Delivered",
+          color: 0xFF009933),
+      Lesson(
+          title: "18 - 1234",
+          box_label: "Box Label",
+          client_name: "John Doe",
+          address: "KL, Malaysia.",
+          status: "Cancelled",
+          color: 0xFFff0000),
+      
+      Lesson(
+          title: "18 - 1234",
+          box_label: "Box Label",
+          client_name: "John Doe",
+          address: "KL, Malaysia.",
+          status: "Pending",
+          color: 0xFFff8b54),
+      Lesson(
+          title: "18 - 1234",
+          box_label: "Box Label",
+          client_name: "John Doe",
+          address: "KL, Malaysia.",
+          status: "Delivered",
+          color: 0xFF009933),
+      Lesson(
+          title: "18 - 1234",
+          box_label: "Box Label",
+          client_name: "John Doe",
+          address: "KL, Malaysia.",
+          status: "Cancelled",
+          color: 0xFFff0000),
+      
+      Lesson(
+          title: "18 - 1234",
+          box_label: "Box Label",
+          client_name: "John Doe",
+          address: "KL, Malaysia.",
+          status: "Pending",
+          color: 0xFFff8b54),    
       ];
   }
 }

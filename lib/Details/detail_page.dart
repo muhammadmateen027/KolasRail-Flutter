@@ -91,6 +91,8 @@ class ScanningState extends State<ScanPageContent> {
                         horizontal: 10.0, vertical: 0.0),
                     child: Container(
                       child: new TextField(
+                        maxLines: null,
+                        keyboardType: TextInputType.multiline,
                         decoration: new InputDecoration(
                           hintText: 'Sign',
                           border: InputBorder.none,

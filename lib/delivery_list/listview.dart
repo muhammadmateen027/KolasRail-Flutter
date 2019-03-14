@@ -40,7 +40,7 @@ class _ListPageState extends State<ListPage> {
       body: Container(
         decoration: app.appBackground(),
         child: Center(
-            child: new Container(
+          child: new Container(
             alignment: Alignment(-1.0, -1.0),
             child: ListView.builder(
               scrollDirection: Axis.vertical,

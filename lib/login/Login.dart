@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constants/stacked_icons.dart';
 import '../delivery_list/listview.dart';
@@ -118,34 +119,23 @@ class LoginState extends State<LoginPageContent> {
   }
 
   void _onLoginTapped(BuildContext context) {
+
+    _loginTokenSaver('abc@abc.com', '');
     Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => new ListPage(title: 'Lessons'),
         ));
   }
+
+  _loginTokenSaver(String email, String password) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    // int counter = (prefs.getInt('counter') ?? 0) + 1;
+    // print('Pressed $counter times.');
+    if (email.length != 0 && password.length != 0) 
+      await prefs.setString('email', password);
+
+
+    print('Stored Value is: ' + prefs.getString('logInToken'));
+  }
 }
-
-// class CustomLoginPage extends StatefulWidget {
-//   @override
-//   createState() => LoginStatedWidget();
-// }
-
-// class LoginStatedWidget extends State<CustomLoginPage> {
-//   final TextEditingController _textController = new TextEditingController();
-//   FocusNode emailNode = FocusNode();
-//   FocusNode passawordNode = FocusNode();
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return GestureDetector(
-//       onTap: () => FocusScope.of(context).requestFocus(new FocusNode()),
-//       child: Scaffold(
-//         backgroundColor: Color.fromRGBO(40, 55, 77, 1.0),
-//         body: SingleChildScrollView(
-//           child: LoginPageContent(),
-//         ),
-//       ),
-//     );
-//   }
-// }

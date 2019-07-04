@@ -8,6 +8,7 @@ import '../delivery_list/listview.dart';
 import 'usermodel.dart';
 import 'dart:convert';
 import 'package:kolas_rail/constants/stacked_icons.dart';
+import 'package:bmprogresshud/bmprogresshud.dart';
 
 class Login extends StatelessWidget {
   final String title;
@@ -26,12 +27,14 @@ class Login extends StatelessWidget {
         ),
         backgroundColor: Color.fromRGBO(40, 55, 77, 1.0),
         drawer: app.appDrawer(context),
-        body: Container(
-          // Add box decoration
-          decoration: app.appBackground(),
-          child: Center(
-            child: SingleChildScrollView(
-              child: LoginPageContent(),
+        body: ProgressHud(
+          child: Container(
+            // Add box decoration
+            decoration: app.appBackground(),
+            child: Center(
+              child: SingleChildScrollView(
+                child: LoginPageContent(),
+              ),
             ),
           ),
         ),
@@ -50,11 +53,17 @@ class LoginState extends State<LoginPageContent> {
   final TextEditingController _passwodtextController =
       new TextEditingController();
 
+  _showLoadingHud(BuildContext context) {
+    ProgressHud.of(context).show(ProgressHudType.loading, "Loading...");
+    // ProgressHud.of(context).dismiss();
+  }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Column(
       children: <Widget>[
+        // _progressHUD,
         new StackedIcons(),
         new AppName(),
         new Container(
@@ -102,7 +111,7 @@ class LoginState extends State<LoginPageContent> {
                           color: const Color(0xFFff8b54),
                           borderRadius: new BorderRadius.circular(5.0)),
                       child: new Text(
-                        "SignIn",
+                        "Sign In",
                         style:
                             new TextStyle(fontSize: 20.0, color: Colors.white),
                       ),
@@ -141,6 +150,7 @@ class LoginState extends State<LoginPageContent> {
       return;
     }
 
+    _showLoadingHud(context);
     var logs = new Map<String, dynamic>();
     logs["email"] = email;
     logs["password"] = password;
@@ -157,13 +167,13 @@ class LoginState extends State<LoginPageContent> {
 
   Future<String> _serverLogin(String email, String password, {Map body}) async {
     final response = await http.post(BASE_URL + '/api/login', body: body);
-
+    ProgressHud.of(context).dismiss();
     if (response.statusCode == 200) {
       _loginTokenSaver(email, password);
       return response.body;
     } else {
       // If that call was not successful, throw an error.
-      _createToast('User with this email not registered.');
+      _createToast('Email and password miss-match.');
       throw Exception('Failed to load post');
     }
   }

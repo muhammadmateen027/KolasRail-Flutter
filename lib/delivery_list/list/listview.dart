@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
-import '../constants/stacked_icons.dart';
+import '../../constants/stacked_icons.dart';
 import 'items/item_list.dart';
 import 'model/lessons.dart';
+import 'package:bmprogresshud/bmprogresshud.dart';
+
 // https://github.com/fabiomsr/Flutter-StepByStep
 // https://proandroiddev.com/flutter-thursday-02-beautiful-list-ui-and-detail-page-a9245f5ceaf0
 
 class ListPage extends StatefulWidget {
-  ListPage({Key key, this.title}) : super(key: key);
+  ListPage({Key key, this.title, this.email, this.password}) : super(key: key);
   final String title;
+  final String email;
+  final String password;
   createState() => _ListPageState();
 }
 
@@ -22,12 +26,14 @@ class _ListPageState extends State<ListPage> {
 
   @override
   void initState() {
+    // ProgressHud.of(context).show(ProgressHudType.loading, "Loading...");
     lessons = lessonClass.getLessons();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       // appBar: topAppBar(appName),
       appBar: new AppBar(
@@ -37,18 +43,20 @@ class _ListPageState extends State<ListPage> {
       backgroundColor: Color.fromRGBO(40, 55, 77, 1.0),
       drawer: app.appDrawer(context),
       // bottomNavigationBar: makeBottom,
-      body: Container(
-        decoration: app.appBackground(),
-        child: Center(
-          child: new Container(
-            alignment: Alignment(-1.0, -1.0),
-            child: ListView.builder(
-              scrollDirection: Axis.vertical,
-              shrinkWrap: true,
-              itemCount: lessons.length,
-              itemBuilder: (BuildContext context, int index) {
-                return lItem.getCard(context, lessons[index]);
-              },
+      body: ProgressHud(
+        child: Container(
+          decoration: app.appBackground(),
+          child: Center(
+            child: new Container(
+              alignment: Alignment(-1.0, -1.0),
+              child: ListView.builder(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemCount: lessons.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return lItem.getCard(context, lessons[index]);
+                },
+              ),
             ),
           ),
         ),

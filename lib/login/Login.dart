@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constants/stacked_icons.dart';
-import '../delivery_list/listview.dart';
+import '../delivery_list/list/listview.dart';
 import 'usermodel.dart';
 import 'dart:convert';
 import 'package:kolas_rail/constants/stacked_icons.dart';
@@ -188,7 +188,11 @@ class LoginState extends State<LoginPageContent> {
     Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => new ListPage(title: 'Lessons'),
+          builder: (context) => new ListPage(
+            title: 'Lessons',
+            email: email,
+            password: password
+            ),
         ));
   }
 }

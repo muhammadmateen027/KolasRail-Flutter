@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../model/lessons.dart';
-import '../../Details/detail_page.dart';
+import '../../../Details/detail_page.dart';
 
 class ListItems extends StatelessWidget {
   @override

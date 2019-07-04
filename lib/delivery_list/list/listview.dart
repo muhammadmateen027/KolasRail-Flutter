@@ -3,6 +3,11 @@ import '../../constants/stacked_icons.dart';
 import 'items/item_list.dart';
 import 'model/lessons.dart';
 import 'package:bmprogresshud/bmprogresshud.dart';
+import 'model/item.dart';
+import 'package:http/http.dart' as http;
+import 'dart:async';
+import 'dart:convert';
+import 'package:flutter/foundation.dart';
 
 // https://github.com/fabiomsr/Flutter-StepByStep
 // https://proandroiddev.com/flutter-thursday-02-beautiful-list-ui-and-detail-page-a9245f5ceaf0
@@ -27,40 +32,52 @@ class _ListPageState extends State<ListPage> {
   @override
   void initState() {
     // ProgressHud.of(context).show(ProgressHudType.loading, "Loading...");
+
     lessons = lessonClass.getLessons();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    
+    print(widget.email);
+    print(widget.password);
     return Scaffold(
       // appBar: topAppBar(appName),
       appBar: new AppBar(
-        title: Text(tabName),
+        title: Text(widget.title),
         backgroundColor: const Color(0xFFff8b54),
       ),
       backgroundColor: Color.fromRGBO(40, 55, 77, 1.0),
       drawer: app.appDrawer(context),
-      // bottomNavigationBar: makeBottom,
-      body: ProgressHud(
-        child: Container(
-          decoration: app.appBackground(),
-          child: Center(
-            child: new Container(
-              alignment: Alignment(-1.0, -1.0),
-              child: ListView.builder(
-                scrollDirection: Axis.vertical,
-                shrinkWrap: true,
-                itemCount: lessons.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return lItem.getCard(context, lessons[index]);
-                },
-              ),
-            ),
-          ),
-        ),
+      bottomNavigationBar: makeBottom,
+      body: FutureBuilder<List<DeliveryItem>>(
+        future: fetchPhotos(widget.email, widget.password, http.Client()),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) print(snapshot.error);
+
+          return snapshot.hasData
+              ? DeliveryItemList(photos: snapshot.data)
+              : Center(child: CircularProgressIndicator());
+        },
       ),
+      // body: ProgressHud(
+      //   child: Container(
+      //     decoration: app.appBackground(),
+      //     child: Center(
+      //       child: new Container(
+      //         alignment: Alignment(-1.0, -1.0),
+      //         child: ListView.builder(
+      //           scrollDirection: Axis.vertical,
+      //           shrinkWrap: true,
+      //           itemCount: lessons.length,
+      //           itemBuilder: (BuildContext context, int index) {
+      //             return lItem.getCard(context, lessons[index]);
+      //           },
+      //         ),
+      //       ),
+      //     ),
+      //   ),
+      // ),
     );
   }
 
@@ -105,4 +122,54 @@ class _ListPageState extends State<ListPage> {
       ),
     ),
   );
+
+  // A function that converts a response body into a List<Photo>.
+  List<DeliveryItem> parsePhotos(String responseBody) {
+    final parsed = json.decode(responseBody).cast<Map<String, dynamic>>();
+
+    print(parsed
+        .map<DeliveryItem>((json) => DeliveryItem.fromJson(json))
+        .toList());
+    return null;
+    // return parsed
+    //     .map<DeliveryItem>((json) => DeliveryItem.fromJson(json))
+    //     .toList();
+  }
+
+  Future<List<DeliveryItem>> fetchPhotos(
+    String email,
+    String password,
+    http.Client client,
+  ) async {
+    var logs = new Map<String, dynamic>();
+    logs["email"] = email;
+    logs["password"] = password;
+
+    final response = await http.post(BASE_URL + '/api/list', body: logs);
+
+    // Use the compute function to run parsePhotos in a separate isolate.
+    print(response.body);
+    return compute(parsePhotos, response.body);
+  }
+}
+
+class DeliveryItemList extends StatelessWidget {
+  final List<DeliveryItem> photos;
+
+  DeliveryItemList({Key key, this.photos}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GridView.builder(
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+      ),
+      itemCount: photos.length,
+      itemBuilder: (context, index) {
+        print('Mateen: =====>> ' + photos[index].success.toString());
+        return Text(photos[index].success.toString());
+        // return Image.network(photos[index].thumbnailUrl);
+      },
+    );
+  }
 }

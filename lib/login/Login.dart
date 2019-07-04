@@ -1,9 +1,12 @@
 import "package:flutter/material.dart";
 import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constants/stacked_icons.dart';
 import '../delivery_list/listview.dart';
+import 'usermodel.dart';
+import 'dart:convert';
 
 class Login extends StatelessWidget {
   final String title;
@@ -41,7 +44,10 @@ class LoginPageContent extends StatefulWidget {
 }
 
 class LoginState extends State<LoginPageContent> {
-  final TextEditingController _textController = new TextEditingController();
+  final TextEditingController _emailtextController =
+      new TextEditingController();
+  final TextEditingController _passwodtextController =
+      new TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +72,7 @@ class LoginState extends State<LoginPageContent> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 20.0, vertical: 0.0),
                 child: new TextField(
-                  controller: _textController,
+                  controller: _emailtextController,
                   decoration: new InputDecoration(labelText: 'Email'),
                 ),
               ),
@@ -77,6 +83,7 @@ class LoginState extends State<LoginPageContent> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 20.0, vertical: 0.0),
                 child: new TextField(
+                  controller: _passwodtextController,
                   obscureText: true,
                   decoration: new InputDecoration(labelText: 'Password'),
                 ),
@@ -85,7 +92,8 @@ class LoginState extends State<LoginPageContent> {
                 padding:
                     const EdgeInsets.only(left: 20.0, right: 20.0, top: 30.0),
                 child: GestureDetector(
-                    onTap: () => _onLoginTapped(context),
+                    onTap: () => _onLoginTapped(context,
+                        _emailtextController.text, _passwodtextController.text),
                     child: Container(
                       alignment: Alignment.center,
                       height: 60.0,
@@ -118,27 +126,61 @@ class LoginState extends State<LoginPageContent> {
     );
   }
 
-  void _onLoginTapped(BuildContext context) {
+  void _onLoginTapped(BuildContext context, String email, String password) {
+    if (email.length == 0) {
+      _createToast("Email required.");
+      return;
+    }
+    if (!email.contains("@")) {
+      _createToast("Wrong email.");
+      return;
+    }
+    if (password.length == 0) {
+      _createToast("Password required.");
+      return;
+    }
 
-    _loginTokenSaver('abc@abc.com', '');
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => new ListPage(title: 'Lessons'),
-        ));
+    var logs = new Map<String, dynamic>();
+    logs["email"] = email;
+    logs["password"] = password;
+
+    _serverLogin(body: logs);
+
+    // Navigator.push(
+    //     context,
+    //     MaterialPageRoute(
+    //       builder: (context) => new ListPage(title: 'Lessons'),
+    //     ));
+  }
+
+  _createToast(String msg) {
+    Scaffold.of(context).showSnackBar(new SnackBar(
+      content: new Text(msg),
+      backgroundColor: Colors.blue,
+    ));
+  }
+
+  Future<String> _serverLogin({Map body}) async {
+    final response = await http
+        .post('https://colas-wms.nebula.nubeslab.tech/api/login', body: body);
+
+    if (response.statusCode == 200) {
+      // _loginTokenSaver()
+      return response.body;
+    } else {
+      // If that call was not successful, throw an error.
+      throw Exception('Failed to load post');
+    }
   }
 
   _loginTokenSaver(String email, String password) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    // int counter = (prefs.getInt('counter') ?? 0) + 1;
-    // print('Pressed $counter times.');
-    if (email.length != 0 && password.length != 0) 
-      await prefs.setString('email', password);
+    if (email.length != 0 && password.length != 0)
+      await prefs
+          .setStringList('auth', [email.toString(), password.toString()]);
 
-
-    print('Stored Value is: ' + prefs.getString('logInToken'));
+    print('Stored Value is: ' + prefs.getStringList('auth').toString() ?? []);
   }
 }
-
 
 //http://tphangout.com/flutter-lists-with-json/

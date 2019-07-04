@@ -7,6 +7,7 @@ import '../constants/stacked_icons.dart';
 import '../delivery_list/listview.dart';
 import 'usermodel.dart';
 import 'dart:convert';
+import 'package:kolas_rail/constants/stacked_icons.dart';
 
 class Login extends StatelessWidget {
   final String title;
@@ -144,13 +145,7 @@ class LoginState extends State<LoginPageContent> {
     logs["email"] = email;
     logs["password"] = password;
 
-    _serverLogin(body: logs);
-
-    // Navigator.push(
-    //     context,
-    //     MaterialPageRoute(
-    //       builder: (context) => new ListPage(title: 'Lessons'),
-    //     ));
+    _serverLogin(email, password, body: logs);
   }
 
   _createToast(String msg) {
@@ -160,15 +155,15 @@ class LoginState extends State<LoginPageContent> {
     ));
   }
 
-  Future<String> _serverLogin({Map body}) async {
-    final response = await http
-        .post('https://colas-wms.nebula.nubeslab.tech/api/login', body: body);
+  Future<String> _serverLogin(String email, String password, {Map body}) async {
+    final response = await http.post(BASE_URL + '/api/login', body: body);
 
     if (response.statusCode == 200) {
-      // _loginTokenSaver()
+      _loginTokenSaver(email, password);
       return response.body;
     } else {
       // If that call was not successful, throw an error.
+      _createToast('User with this email not registered.');
       throw Exception('Failed to load post');
     }
   }
@@ -178,8 +173,13 @@ class LoginState extends State<LoginPageContent> {
     if (email.length != 0 && password.length != 0)
       await prefs
           .setStringList('auth', [email.toString(), password.toString()]);
+    // print('Stored Value is: ' + prefs.getStringList('auth').toString() ?? []);
 
-    print('Stored Value is: ' + prefs.getStringList('auth').toString() ?? []);
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => new ListPage(title: 'Lessons'),
+        ));
   }
 }
 

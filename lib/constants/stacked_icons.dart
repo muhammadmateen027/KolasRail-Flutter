@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+var BASE_URL = "https://colas-wms.nebula.nubeslab.tech";
+
 class AppBackground extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

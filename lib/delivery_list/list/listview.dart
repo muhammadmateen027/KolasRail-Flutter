@@ -49,70 +49,55 @@ class _ListPageState extends State<ListPage> {
     print(widget.email);
     print(widget.password);
     return Scaffold(
-        // appBar: topAppBar(appName),
-        appBar: new AppBar(
-          title: Text(widget.title),
-          backgroundColor: const Color(0xFFff8b54),
-        ),
-        backgroundColor: Color.fromRGBO(40, 55, 77, 1.0),
-        drawer: app.appDrawer(context),
-        body: FutureBuilder<Product>(
-            future: fetchData(),
-            builder: (context, snapshot) {
-              
-              switch (snapshot.connectionState) {
-                case ConnectionState.none:
-                  return new Text('Input a URL to start');
-                case ConnectionState.waiting:
-                  return new Center(child: new CircularProgressIndicator());
-                case ConnectionState.active:
-                  return new Text('');
-                case ConnectionState.done:
-                  if (snapshot.hasError) {
-                    print("/////////////////////////");
-                    return new Text(
-                      '${snapshot.error}',
-                      style: TextStyle(color: Colors.red),
-                    );
-                  } else {
-                    // print("==>> " + snapshot.data);
-                    Product pr = snapshot.data;
-                    print(pr.success[0].userApprove);
-                    print("+++++++++++++++++++++++++++++++" );
-                    return new ListView.builder(
-                      scrollDirection: Axis.vertical,
-                    shrinkWrap: true,
-                    itemCount: pr.success.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return lItem.getCard(context, pr.success[index]);
-                    },
-
-                    );
-                        
+      // appBar: topAppBar(appName),
+      appBar: new AppBar(
+        title: Text(widget.title),
+        backgroundColor: const Color(0xFFff8b54),
+      ),
+      backgroundColor: Color.fromRGBO(40, 55, 77, 1.0),
+      drawer: app.appDrawer(context),
+      body: Container(
+        decoration: app.appBackground(),
+        child: Center(
+          child: new Container(
+            alignment: Alignment(-1.0, -1.0),
+            child: FutureBuilder<Product>(
+                future: fetchData(),
+                builder: (context, snapshot) {
+                  switch (snapshot.connectionState) {
+                    case ConnectionState.none:
+                      return new Text('Input a URL to start');
+                    case ConnectionState.waiting:
+                      return new Center(child: new CircularProgressIndicator());
+                    case ConnectionState.active:
+                      return new Text('');
+                    case ConnectionState.done:
+                      if (snapshot.hasError) {
+                        print("/////////////////////////");
+                        return new Text(
+                          '${snapshot.error}',
+                          style: TextStyle(color: Colors.red),
+                        );
+                      } else {
+                        // print("==>> " + snapshot.data);
+                        Product pr = snapshot.data;
+                        print(pr.success[0].userApprove);
+                        print("+++++++++++++++++++++++++++++++");
+                        return new ListView.builder(
+                          scrollDirection: Axis.vertical,
+                          shrinkWrap: true,
+                          itemCount: pr.success.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return lItem.getCard(context, pr.success[index]);
+                          },
+                        );
+                      }
                   }
-              }
-            })
-
-        // bottomNavigationBar: makeBottom,
-        // body: ProgressHud(
-        //   child: Container(
-        //     decoration: app.appBackground(),
-        //     child: Center(
-        //       child: new Container(
-        //         alignment: Alignment(-1.0, -1.0),
-        //         child: ListView.builder(
-        //           scrollDirection: Axis.vertical,
-        //           shrinkWrap: true,
-        //           itemCount: lessons.length,
-        //           itemBuilder: (BuildContext context, int index) {
-        //             return lItem.getCard(context, lessons[index]);
-        //           },
-        //         ),
-        //       ),
-        //     ),
-        //   ),
-        // ),
-        );
+                }),
+          ),
+        ),
+      ),
+    );
   }
 
   //Top App bar with Right Icon
@@ -162,7 +147,7 @@ class _ListPageState extends State<ListPage> {
 
     if (response.statusCode == 200) {
       print("**************************************");
-      // return  compute(parsePhotos, response.body); 
+      // return  compute(parsePhotos, response.body);
 
       return Product.fromJson(json.decode(response.body));
     } else {

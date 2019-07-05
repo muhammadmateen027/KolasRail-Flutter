@@ -8,6 +8,8 @@ import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
+import 'dart:async';
+import 'dart:convert';
 
 // https://github.com/fabiomsr/Flutter-StepByStep
 // https://proandroiddev.com/flutter-thursday-02-beautiful-list-ui-and-detail-page-a9245f5ceaf0
@@ -21,13 +23,14 @@ class ListPage extends StatefulWidget {
 }
 
 class _ListPageState extends State<ListPage> {
+  var logs;
   List lessons;
   AppBackground app = new AppBackground();
   ListItems lItem = new ListItems();
   Lesson lessonClass = new Lesson();
+  List<Product> items = List();
 
   final String appName = "Kolas Rail";
-  final String tabName = "Delivery List";
 
   @override
   void initState() {
@@ -39,46 +42,77 @@ class _ListPageState extends State<ListPage> {
 
   @override
   Widget build(BuildContext context) {
+    logs = new Map<String, dynamic>();
+    logs["email"] = widget.email;
+    logs["password"] = widget.password;
+
     print(widget.email);
     print(widget.password);
     return Scaffold(
-      // appBar: topAppBar(appName),
-      appBar: new AppBar(
-        title: Text(widget.title),
-        backgroundColor: const Color(0xFFff8b54),
-      ),
-      backgroundColor: Color.fromRGBO(40, 55, 77, 1.0),
-      drawer: app.appDrawer(context),
-      bottomNavigationBar: makeBottom,
-      body: FutureBuilder<List<DeliveryItem>>(
-        future: fetchPhotos(widget.email, widget.password, http.Client()),
-        builder: (context, snapshot) {
-          if (snapshot.hasError) print(snapshot.error);
+        // appBar: topAppBar(appName),
+        appBar: new AppBar(
+          title: Text(widget.title),
+          backgroundColor: const Color(0xFFff8b54),
+        ),
+        backgroundColor: Color.fromRGBO(40, 55, 77, 1.0),
+        drawer: app.appDrawer(context),
+        body: FutureBuilder<Product>(
+            future: fetchData(),
+            builder: (context, snapshot) {
+              
+              switch (snapshot.connectionState) {
+                case ConnectionState.none:
+                  return new Text('Input a URL to start');
+                case ConnectionState.waiting:
+                  return new Center(child: new CircularProgressIndicator());
+                case ConnectionState.active:
+                  return new Text('');
+                case ConnectionState.done:
+                  if (snapshot.hasError) {
+                    print("/////////////////////////");
+                    return new Text(
+                      '${snapshot.error}',
+                      style: TextStyle(color: Colors.red),
+                    );
+                  } else {
+                    // print("==>> " + snapshot.data);
+                    Product pr = snapshot.data;
+                    print(pr.success[0].userApprove);
+                    print("+++++++++++++++++++++++++++++++" );
+                    return new ListView.builder(
+                      scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    itemCount: pr.success.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return lItem.getCard(context, pr.success[index]);
+                    },
 
-          return snapshot.hasData
-              ? DeliveryItemList(photos: snapshot.data)
-              : Center(child: CircularProgressIndicator());
-        },
-      ),
-      // body: ProgressHud(
-      //   child: Container(
-      //     decoration: app.appBackground(),
-      //     child: Center(
-      //       child: new Container(
-      //         alignment: Alignment(-1.0, -1.0),
-      //         child: ListView.builder(
-      //           scrollDirection: Axis.vertical,
-      //           shrinkWrap: true,
-      //           itemCount: lessons.length,
-      //           itemBuilder: (BuildContext context, int index) {
-      //             return lItem.getCard(context, lessons[index]);
-      //           },
-      //         ),
-      //       ),
-      //     ),
-      //   ),
-      // ),
-    );
+                    );
+                        
+                  }
+              }
+            })
+
+        // bottomNavigationBar: makeBottom,
+        // body: ProgressHud(
+        //   child: Container(
+        //     decoration: app.appBackground(),
+        //     child: Center(
+        //       child: new Container(
+        //         alignment: Alignment(-1.0, -1.0),
+        //         child: ListView.builder(
+        //           scrollDirection: Axis.vertical,
+        //           shrinkWrap: true,
+        //           itemCount: lessons.length,
+        //           itemBuilder: (BuildContext context, int index) {
+        //             return lItem.getCard(context, lessons[index]);
+        //           },
+        //         ),
+        //       ),
+        //     ),
+        //   ),
+        // ),
+        );
   }
 
   //Top App bar with Right Icon
@@ -123,53 +157,23 @@ class _ListPageState extends State<ListPage> {
     ),
   );
 
-  // A function that converts a response body into a List<Photo>.
-  List<DeliveryItem> parsePhotos(String responseBody) {
-    final parsed = json.decode(responseBody).cast<Map<String, dynamic>>();
-
-    print(parsed
-        .map<DeliveryItem>((json) => DeliveryItem.fromJson(json))
-        .toList());
-    return null;
-    // return parsed
-    //     .map<DeliveryItem>((json) => DeliveryItem.fromJson(json))
-    //     .toList();
-  }
-
-  Future<List<DeliveryItem>> fetchPhotos(
-    String email,
-    String password,
-    http.Client client,
-  ) async {
-    var logs = new Map<String, dynamic>();
-    logs["email"] = email;
-    logs["password"] = password;
-
+  Future<Product> fetchData() async {
     final response = await http.post(BASE_URL + '/api/list', body: logs);
 
-    // Use the compute function to run parsePhotos in a separate isolate.
-    print(response.body);
-    return compute(parsePhotos, response.body);
+    if (response.statusCode == 200) {
+      print("**************************************");
+      // return  compute(parsePhotos, response.body); 
+
+      return Product.fromJson(json.decode(response.body));
+    } else {
+      // If that call was not successful, throw an error.
+      throw Exception('Failed to load post');
+    }
   }
-}
 
-class DeliveryItemList extends StatelessWidget {
-  final List<DeliveryItem> photos;
+  List<Product> parsePhotos(String responseBody) {
+    final parsed = json.decode(responseBody).cast<Map<String, dynamic>>();
 
-  DeliveryItemList({Key key, this.photos}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return GridView.builder(
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-      ),
-      itemCount: photos.length,
-      itemBuilder: (context, index) {
-        print('Mateen: =====>> ' + photos[index].success.toString());
-        return Text(photos[index].success.toString());
-        // return Image.network(photos[index].thumbnailUrl);
-      },
-    );
+    return parsed.map<Product>((json) => Product.fromJson(json)).toList();
   }
 }

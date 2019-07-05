@@ -189,7 +189,7 @@ class LoginState extends State<LoginPageContent> {
         context,
         MaterialPageRoute(
           builder: (context) => new ListPage(
-            title: 'Lessons',
+            title: 'Delivery List',
             email: email,
             password: password
             ),

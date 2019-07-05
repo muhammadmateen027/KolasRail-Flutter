@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../model/lessons.dart';
+import '../model/item.dart';
 import '../../../Details/detail_page.dart';
 
 class ListItems extends StatelessWidget {
@@ -9,7 +9,7 @@ class ListItems extends StatelessWidget {
     return null;
   }
 
-  Card getCard(BuildContext context, Lesson lesson) {
+  Card getCard(BuildContext context, Success lesson) {
     return new Card(
       elevation: 8.0,
       margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
@@ -20,7 +20,7 @@ class ListItems extends StatelessWidget {
     );
   }
 
-  ListTile getTile(BuildContext context, Lesson lesson) {
+  ListTile getTile(BuildContext context, Success lesson) {
     return new ListTile(
       contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
       // leading: Container(
@@ -39,7 +39,7 @@ class ListItems extends StatelessWidget {
         child:
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           Text(
-            lesson.title,
+            lesson.project,
             style: TextStyle(
                 color: Colors.black45,
                 fontWeight: FontWeight.bold,
@@ -50,13 +50,13 @@ class ListItems extends StatelessWidget {
             children: [
               Container(
                 margin: EdgeInsets.only(right: 10.0),
-                child: getSmallTick(lesson.color),
+                child: getSmallTick(0xFF009933),
               ),
               Container(
                 child: Text(
-                  lesson.status,
+                  "Received",
                   style: TextStyle(
-                      color: Color(lesson.color), fontWeight: FontWeight.bold),
+                      color: Color(0xFF009933), fontWeight: FontWeight.bold),
                 ),
               ),
             ],
@@ -70,7 +70,7 @@ class ListItems extends StatelessWidget {
           Container(
             margin: EdgeInsets.only(top: 5.0, bottom: 5.0),
             child: Text(
-              lesson.box_label,
+              lesson.document,
               style: TextStyle(
                   color: Colors.black45, fontWeight: FontWeight.normal),
             ),
@@ -87,7 +87,7 @@ class ListItems extends StatelessWidget {
               ),
               Container(
                 child: Text(
-                  lesson.client_name,
+                  lesson.userCreate,
                   style: TextStyle(
                       color: Colors.black45, fontWeight: FontWeight.bold),
                 ),
@@ -106,7 +106,7 @@ class ListItems extends StatelessWidget {
               ),
               Container(
                 child: Text(
-                  lesson.address,
+                  lesson.deliverLoc,
                   style: TextStyle(
                       color: Colors.black45, fontWeight: FontWeight.bold),
                 ),
@@ -121,7 +121,8 @@ class ListItems extends StatelessWidget {
   }
 
   // goto Next Activity as
-  void pushToActivity(BuildContext context, Lesson lesson) {
+  void pushToActivity(BuildContext context, Success lesson) {
+    print("======>>>>>  "+lesson.reqId.toString());
     Navigator.push(context,
         MaterialPageRoute(builder: (context) => DetailPage(lesson: lesson)));
   }

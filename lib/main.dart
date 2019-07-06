@@ -11,17 +11,17 @@ class MainPage extends StatelessWidget{
     // TODO: implement build
     return MaterialApp(
       title: appTitle,
-      home: HomePage(title: appTitle,),
+      home: Login(title: appTitle,),
     );
   }
 }
 
-class HomePage extends StatelessWidget{
-  final String title;
-  HomePage({Key key, this.title}) : super(key: key);
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    return Login(title:title);
-  }
-}
+// class HomePage extends StatelessWidget{
+//   final String title;
+//   HomePage({Key key, this.title}) : super(key: key);
+//   @override
+//   Widget build(BuildContext context) {
+//     // TODO: implement build
+//     return Login(title:title);
+//   }
+// }

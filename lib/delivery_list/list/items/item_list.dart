@@ -21,20 +21,18 @@ class ListItems extends StatelessWidget {
   }
 
   ListTile getTile(BuildContext context, Success lesson) {
+    String status = "";
+    int color; 
+
+    if (lesson.reqStatus == 3) {
+      color = 0xFFff8b54;
+      status = "Pending";
+    } else { 
+      status = "Received";
+      color = 0xFF009933;
+    }
     return new ListTile(
       contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-      // leading: Container(
-      //   padding: EdgeInsets.only(right: 12.0),
-      //   decoration: new BoxDecoration(
-      //       border: new Border(
-      //           right: new BorderSide(width: 1.0, color: Colors.green))),
-      //   child: Icon(Icons.check, color: Colors.green),
-      // ),
-      // title: Text(
-      //   lesson.title,
-      //   style: TextStyle(
-      //       color: Colors.black45, fontWeight: FontWeight.bold, fontSize: 18.0),
-      // ),
       title: Container(
         child:
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
@@ -50,13 +48,13 @@ class ListItems extends StatelessWidget {
             children: [
               Container(
                 margin: EdgeInsets.only(right: 10.0),
-                child: getSmallTick(0xFF009933),
+                child: getSmallTick(lesson.reqStatus),
               ),
               Container(
                 child: Text(
-                  "Received",
+                  status,
                   style: TextStyle(
-                      color: Color(0xFF009933), fontWeight: FontWeight.bold),
+                      color: Color(color), fontWeight: FontWeight.bold),
                 ),
               ),
             ],
@@ -80,14 +78,14 @@ class ListItems extends StatelessWidget {
             children: [
               Container(
                 child: Text(
-                  "Client: ",
+                  "Origin: ",
                   style: TextStyle(
                       color: Colors.black45, fontWeight: FontWeight.normal),
                 ),
               ),
               Container(
                 child: Text(
-                  lesson.userCreate,
+                  lesson.originName,
                   style: TextStyle(
                       color: Colors.black45, fontWeight: FontWeight.bold),
                 ),
@@ -99,14 +97,14 @@ class ListItems extends StatelessWidget {
             children: [
               Container(
                 child: Text(
-                  "Origin Address: ",
+                  "Destination: ",
                   style: TextStyle(
                       color: Colors.black45, fontWeight: FontWeight.normal),
                 ),
               ),
               Container(
                 child: Text(
-                  lesson.deliverLoc,
+                  lesson.destinationName,
                   style: TextStyle(
                       color: Colors.black45, fontWeight: FontWeight.bold),
                 ),
@@ -127,7 +125,17 @@ class ListItems extends StatelessWidget {
         MaterialPageRoute(builder: (context) => DetailPage(lesson: lesson)));
   }
 
-  Stack getSmallTick(int color) {
+  Stack getSmallTick(int reqStatus) {
+    int color;
+    IconData icon;
+    if(reqStatus == 3) {
+      color = 0xFFff8b54;
+      icon = Icons.timer;
+    } else {
+      color = 0xFF009933;
+      icon = Icons.check;
+    }
+    
     return new Stack(
               alignment: Alignment.center,
               children: <Widget>[
@@ -138,7 +146,7 @@ class ListItems extends StatelessWidget {
                     borderRadius: new BorderRadius.circular(50.0),
                     color: Color(color)
                   ),
-                  child: new Icon(Icons.check, color: Colors.white, size: 10.0,),
+                  child: new Icon(icon, color: Colors.white, size: 10.0,),
                 ),//local_offer
               ],
               

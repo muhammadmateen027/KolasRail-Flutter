@@ -73,16 +73,13 @@ class _ListPageState extends State<ListPage> {
                       return new Text('');
                     case ConnectionState.done:
                       if (snapshot.hasError) {
-                        print("/////////////////////////");
                         return new Text(
                           '${snapshot.error}',
-                          style: TextStyle(color: Colors.red),
+                          style: TextStyle(color: Colors.black),
                         );
                       } else {
                         // print("==>> " + snapshot.data);
                         Product pr = snapshot.data;
-                        print(pr.success[0].userApprove);
-                        print("+++++++++++++++++++++++++++++++");
                         return new ListView.builder(
                           scrollDirection: Axis.vertical,
                           shrinkWrap: true,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'login/Login.dart';
 import 'delivery_list/list/listview.dart';
+import 'package:kolas_rail/Details/stock_list.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings setting) {
@@ -15,6 +16,14 @@ class RouteGenerator {
           return MaterialPageRoute(builder: (_) => ListPage(args: args,));
         }
         return _errorRoute();
+      case '/stockList':
+        if(args is int) {
+          return MaterialPageRoute(builder: (_) => StockItemDetail(itemId: args,));
+        } else {
+          print("Type is not confimed:"+ args.toString());
+        }
+        return _errorRoute();
+
       default: 
         return _errorRoute();
     }

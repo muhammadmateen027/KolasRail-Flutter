@@ -3,13 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 var BASE_URL = "https://colas-wms.nebula.nubeslab.tech";
 
-class AppBackground extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    return null;
-  }
-
+class AppBackground  {
   BoxDecoration appBackground() {
     return new BoxDecoration(
       // Box decoration takes a gradient

@@ -1,15 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:kolas_rail/Details/stock_list.dart';
 import '../model/item.dart';
-import '../../../Details/detail_page.dart';
+import '../../../Details/stock_list.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
-class ListItems extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    return null;
-  }
+class ListItems {
 
   Card getCard(BuildContext context, Success lesson) {
     return new Card(
@@ -24,12 +19,12 @@ class ListItems extends StatelessWidget {
 
   ListTile getTile(BuildContext context, Success lesson) {
     String status = "";
-    int color; 
+    int color;
 
     if (lesson.reqStatus == 3) {
       color = 0xFFff8b54;
       status = "Pending";
-    } else { 
+    } else {
       status = "Received";
       color = 0xFF009933;
     }
@@ -122,43 +117,49 @@ class ListItems extends StatelessWidget {
 
   // goto Next Activity as
   void pushToActivity(BuildContext context, Success lesson) {
-    print("======>>>>>  "+lesson.reqId.toString());
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => DetailPage(lesson: lesson)));
-        _loginTokenSaver();
+    print("======>>>>>  " + lesson.reqId.toString());
+    Navigator.of(context).pushNamed('/stockList', arguments: lesson.reqId);
+    // Navigator.of(context).push(
+    //     MaterialPageRoute(builder: (context) => StockItemDetail(itemId: lesson.reqId)));
+
+    // Navigator.push(context,
+    //     MaterialPageRoute(builder: (context) => StockItemDetail(itemId: lesson.reqId)));
+    // _loginTokenSaver();
   }
-    _loginTokenSaver() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs
-          .setStringList('auth', []);
-    // print('Stored Value is: ' + prefs.getStringList('auth').toString() ?? []);
-  }
+
+  // _loginTokenSaver() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   await prefs.setStringList('auth', []);
+  //   // print('Stored Value is: ' + prefs.getStringList('auth').toString() ?? []);
+  // }
 
   Stack getSmallTick(int reqStatus) {
     int color;
     IconData icon;
-    if(reqStatus == 3) {
+    if (reqStatus == 3) {
       color = 0xFFff8b54;
       icon = Icons.timer;
     } else {
       color = 0xFF009933;
       icon = Icons.check;
     }
-    
+
     return new Stack(
-              alignment: Alignment.center,
-              children: <Widget>[
-                new Container(
-                  height: 15.0,
-                  width: 15.0,
-                  decoration: new BoxDecoration(
-                    borderRadius: new BorderRadius.circular(50.0),
-                    color: Color(color)
-                  ),
-                  child: new Icon(icon, color: Colors.white, size: 10.0,),
-                ),//local_offer
-              ],
-              
-            );
+      alignment: Alignment.center,
+      children: <Widget>[
+        new Container(
+          height: 15.0,
+          width: 15.0,
+          decoration: new BoxDecoration(
+              borderRadius: new BorderRadius.circular(50.0),
+              color: Color(color)),
+          child: new Icon(
+            icon,
+            color: Colors.white,
+            size: 10.0,
+          ),
+        ), //local_offer
+      ],
+    );
   }
 }

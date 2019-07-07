@@ -46,16 +46,9 @@ class _ListPageState extends State<ListPage> {
   void initState() {
     // ProgressHud.of(context).show(ProgressHudType.loading, "Loading...");
 
-    // lessons = lessonClass.getLessons();
     logs = new Map<String, dynamic>();
     logs["email"] = widget.args[0];
     logs["password"] = widget.args[1];
-    // _getSharedPref().then((value) {
-    //   if (value.length > 0) {
-    //   logs["email"] = value[0];
-    //   logs["password"] = value[1];
-    //   }
-    // });
     super.initState();
   }
     Future<List> _getSharedPref() async {
@@ -162,7 +155,7 @@ class _ListPageState extends State<ListPage> {
     final response = await http.post(BASE_URL + '/api/list', body: logs);
 
     if (response.statusCode == 200) {
-      print("**************************************");
+      // print("**************************************");
       // return  compute(parsePhotos, response.body);
 
       return Product.fromJson(json.decode(response.body));
@@ -170,11 +163,5 @@ class _ListPageState extends State<ListPage> {
       // If that call was not successful, throw an error.
       throw Exception('Failed to load post');
     }
-  }
-
-  List<Product> parsePhotos(String responseBody) {
-    final parsed = json.decode(responseBody).cast<Map<String, dynamic>>();
-
-    return parsed.map<Product>((json) => Product.fromJson(json)).toList();
   }
 }

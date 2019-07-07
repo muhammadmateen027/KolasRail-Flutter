@@ -5,6 +5,7 @@ import 'model/lessons.dart';
 import 'package:bmprogresshud/bmprogresshud.dart';
 import 'model/item.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
@@ -15,10 +16,19 @@ import 'dart:convert';
 // https://proandroiddev.com/flutter-thursday-02-beautiful-list-ui-and-detail-page-a9245f5ceaf0
 
 class ListPage extends StatefulWidget {
-  ListPage({Key key, this.title, this.email, this.password}) : super(key: key);
-  final String title;
-  final String email;
-  final String password;
+  final List<String> args;
+  final String title = "Delivery List";
+  final String email = "";
+  final String password = "";
+
+  ListPage(
+    {
+      Key key, 
+      @required this.args,
+      }
+    ) : super(key: key);
+  
+  
   createState() => _ListPageState();
 }
 
@@ -36,22 +46,31 @@ class _ListPageState extends State<ListPage> {
   void initState() {
     // ProgressHud.of(context).show(ProgressHudType.loading, "Loading...");
 
-    lessons = lessonClass.getLessons();
+    // lessons = lessonClass.getLessons();
+    logs = new Map<String, dynamic>();
+    logs["email"] = widget.args[0];
+    logs["password"] = widget.args[1];
+    // _getSharedPref().then((value) {
+    //   if (value.length > 0) {
+    //   logs["email"] = value[0];
+    //   logs["password"] = value[1];
+    //   }
+    // });
     super.initState();
+  }
+    Future<List> _getSharedPref() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    return prefs.getStringList('auth') ?? [];
   }
 
   @override
   Widget build(BuildContext context) {
-    logs = new Map<String, dynamic>();
-    logs["email"] = widget.email;
-    logs["password"] = widget.password;
-
-    print(widget.email);
-    print(widget.password);
+    print("+*+*+*+*+*+*+*+ "+widget.args[0]+" +*++*+*+*+*+*+*+");
     return Scaffold(
       // appBar: topAppBar(appName),
       appBar: new AppBar(
-        title: Text(widget.title),
+        title: Text("Delivery List"),
         backgroundColor: const Color(0xFFff8b54),
       ),
       backgroundColor: Color.fromRGBO(40, 55, 77, 1.0),

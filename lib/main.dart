@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'login/Login.dart';
 import 'delivery_list/list/listview.dart';
+import 'route_generator.dart';
 
 void main() => runApp(MainPage());
 
@@ -11,7 +12,13 @@ class MainPage extends StatelessWidget{
     // TODO: implement build
     return MaterialApp(
       title: appTitle,
-      home: Login(title: appTitle,),
+      initialRoute: '/',
+      onGenerateRoute: RouteGenerator.generateRoute,
+      // routes: {
+      //   '/': (context) => Login(title: appTitle,),
+      //   '/deliveryList': (context) => ListPage(),
+      // },
+      // home: Login(title: appTitle,),
     );
   }
 }

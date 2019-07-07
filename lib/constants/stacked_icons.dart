@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 var BASE_URL = "https://colas-wms.nebula.nubeslab.tech";
 
@@ -30,43 +31,45 @@ class AppBackground extends StatelessWidget {
     );
   }
 
-
   Drawer appDrawer(BuildContext context) {
     return Drawer(
-          // Add a ListView to the drawer. This ensures the user can scroll
-          // through the options in the Drawer if there isn't enough vertical
-          // space to fit everything.
-          child: ListView(
-            // Important: Remove any padding from the ListView.
-            padding: EdgeInsets.zero,
-            children: <Widget>[
-              DrawerHeader(
-                child: Text('Drawer Header', style: new TextStyle(color: Colors.white),),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFff8b54),
-                ),
-              ),
-              ListTile(
-                title: Text('Item 1'),
-                onTap: () {
-                  // Update the state of the app
-                  // ...
-                  // Then close the drawer
-                  Navigator.pop(context);
-                },
-              ),
-              ListTile(
-                title: Text('Item 2'),
-                onTap: () {
-                  // Update the state of the app
-                  // ...
-                  // Then close the drawer
-                  Navigator.pop(context);
-                },
-              ),
-            ],
+      // Add a ListView to the drawer. This ensures the user can scroll
+      // through the options in the Drawer if there isn't enough vertical
+      // space to fit everything.
+      child: ListView(
+        // Important: Remove any padding from the ListView.
+        padding: EdgeInsets.zero,
+        children: <Widget>[
+          DrawerHeader(
+            child: Text(
+              'Drawer Header',
+              style: new TextStyle(color: Colors.white),
+            ),
+            decoration: BoxDecoration(
+              color: const Color(0xFFff8b54),
+            ),
           ),
-        );
+          ListTile(
+            title: Text('Item 1'),
+            onTap: () {
+              // Update the state of the app
+              // ...
+              // Then close the drawer
+              Navigator.pop(context);
+            },
+          ),
+          ListTile(
+            title: Text('Item 2'),
+            onTap: () {
+              // Update the state of the app
+              // ...
+              // Then close the drawer
+              Navigator.pop(context);
+            },
+          ),
+        ],
+      ),
+    );
   }
 }
 
@@ -96,23 +99,20 @@ class StackedIcons extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO: implement build
     return new Stack(
-              alignment: Alignment.center,
-              children: <Widget>[
-                new Container(
-                  height: 60.0,
-                  width: 60.0,
-                  decoration: new BoxDecoration(
-                    borderRadius: new BorderRadius.circular(50.0),
-                    color: Color(0xFF18D191)
-                  ),
-                  child: new Icon(Icons.local_offer, color: Colors.white,),
-                ),//local_offer
-                
-              
-              ],
-              
-            );
+      alignment: Alignment.center,
+      children: <Widget>[
+        new Container(
+          height: 60.0,
+          width: 60.0,
+          decoration: new BoxDecoration(
+              borderRadius: new BorderRadius.circular(50.0),
+              color: Color(0xFF18D191)),
+          child: new Icon(
+            Icons.local_offer,
+            color: Colors.white,
+          ),
+        ), //local_offer
+      ],
+    );
   }
-
 }
-

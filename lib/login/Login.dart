@@ -1,28 +1,29 @@
 import "package:flutter/material.dart";
-import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../constants/stacked_icons.dart';
-import '../delivery_list/list/listview.dart';
-import 'usermodel.dart';
-import 'dart:convert';
 import 'package:kolas_rail/constants/stacked_icons.dart';
 import 'package:bmprogresshud/bmprogresshud.dart';
 
 class Login extends StatelessWidget {
-  final String title;
+  // final String title;
   AppBackground app = new AppBackground();
 
-  Login({Key key, this.title}) : super(key: key);
+  Login({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    _getSharedPref().then((value) {
+      if (value.length > 0) {
+        // Navigator.pushReplacementNamed(
+        // context, '/deliveryList');
+      }
+    });
     // TODO: implement build
     return GestureDetector(
       onTap: () => FocusScope.of(context).requestFocus(new FocusNode()),
       child: Scaffold(
         appBar: AppBar(
-          title: Text(title),
+          title: Text("Kolas Rail"),
           backgroundColor: const Color(0xFFff8b54),
         ),
         backgroundColor: Color.fromRGBO(40, 55, 77, 1.0),
@@ -40,6 +41,12 @@ class Login extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<List> _getSharedPref() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    return prefs.getStringList('auth') ?? [];
   }
 }
 
@@ -60,6 +67,7 @@ class LoginState extends State<LoginPageContent> {
 
   @override
   Widget build(BuildContext context) {
+    print("Hello World");
     // TODO: implement build
     return Column(
       children: <Widget>[
@@ -156,6 +164,9 @@ class LoginState extends State<LoginPageContent> {
     logs["password"] = password;
 
     _serverLogin(email, password, body: logs);
+
+    // Navigator.pop(context);
+    _navigateNext(email, password);
   }
 
   _createToast(String msg) {
@@ -184,19 +195,15 @@ class LoginState extends State<LoginPageContent> {
       await prefs
           .setStringList('auth', [email.toString(), password.toString()]);
     // print('Stored Value is: ' + prefs.getStringList('auth').toString() ?? []);
-
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => new ListPage(
-            title: 'Delivery List',
-            email: email,
-            password: password
-            ),
-        ));
-
   }
 
+  _navigateNext(String email, String password) {
+    List<String> list = new List();
+    list.add(email);
+    list.add(password);
+    Navigator.of(context).pushReplacementNamed('/deliveryList', arguments: list);
+    // Navigator.of(context).pop();
+  }
 }
 
 //http://tphangout.com/flutter-lists-with-json/

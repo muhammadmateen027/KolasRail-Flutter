@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../model/item.dart';
 import '../../../Details/detail_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 
 class ListItems extends StatelessWidget {
   @override
@@ -123,6 +125,13 @@ class ListItems extends StatelessWidget {
     print("======>>>>>  "+lesson.reqId.toString());
     Navigator.push(context,
         MaterialPageRoute(builder: (context) => DetailPage(lesson: lesson)));
+        _loginTokenSaver();
+  }
+    _loginTokenSaver() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs
+          .setStringList('auth', []);
+    // print('Stored Value is: ' + prefs.getStringList('auth').toString() ?? []);
   }
 
   Stack getSmallTick(int reqStatus) {

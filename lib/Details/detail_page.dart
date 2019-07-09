@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:kolas_rail/model/item.dart';
+import 'package:kolas_rail/model/stock_items.dart';
 import '../constants/stacked_icons.dart';
 // https://github.com/fabiomsr/Flutter-StepByStep
 // https://proandroiddev.com/flutter-thursday-02-beautiful-list-ui-and-detail-page-a9245f5ceaf0
 
 class DetailPage extends StatefulWidget {
-  DetailPage({Key key, this.lesson}) : super(key: key);
-  final Success lesson;
+  DetailPage({Key key, this.list}) : super(key: key);
+  final List<String> list;
 
   createState() => _DetailPageClass();
 }

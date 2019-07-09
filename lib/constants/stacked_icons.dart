@@ -3,7 +3,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 var BASE_URL = "https://colas-wms.nebula.nubeslab.tech";
 
-class AppBackground  {
+class AppBackground {
+  void _createToast(BuildContext context,String msg) {
+    Scaffold.of(context).showSnackBar(new SnackBar(
+      content: new Text(msg),
+      backgroundColor: Colors.blue,
+    ));
+  }
+
   BoxDecoration appBackground() {
     return new BoxDecoration(
       // Box decoration takes a gradient

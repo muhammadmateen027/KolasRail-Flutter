@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'login/Login.dart';
 import 'delivery_list/list/listview.dart';
-import 'package:kolas_rail/Details/stock_list.dart';
+import 'package:kolas_rail/Details/stock_page.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings setting) {

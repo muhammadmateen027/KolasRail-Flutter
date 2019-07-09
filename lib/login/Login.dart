@@ -3,14 +3,20 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:kolas_rail/constants/stacked_icons.dart';
 import 'package:bmprogresshud/bmprogresshud.dart';
+import 'package:kolas_rail/model/usermodel.dart';
+
+import 'dart:async';
+import 'dart:convert';
 
 class Login extends StatelessWidget {
   // final String title;
-  AppBackground app = new AppBackground();
+  AppBackground app;
+
 
   Login({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    app = new AppBackground();
     _getSharedPref().then((value) {
       if (value.length > 0) {
         // Navigator.pushReplacementNamed(
@@ -66,6 +72,7 @@ class LoginState extends State<LoginPageContent> {
 
   @override
   Widget build(BuildContext context) {
+    
     print("Hello World");
     // TODO: implement build
     return Column(
@@ -162,10 +169,18 @@ class LoginState extends State<LoginPageContent> {
     logs["email"] = email;
     logs["password"] = password;
 
-    _serverLogin(email, password, body: logs);
+    Future<User> userResult = _serverLogin(body: logs);
+    userResult.then((val) {
+      if (val.success.toString() == 'true') {
+        _loginTokenSaver(email, password);
+        _navigateNext(email, password);
+      } else {
+        _createToast('Email and password mismatch.');
+      }
+    });
 
     // Navigator.pop(context);
-    _navigateNext(email, password);
+    // _navigateNext(email, password);
   }
 
   _createToast(String msg) {
@@ -175,12 +190,11 @@ class LoginState extends State<LoginPageContent> {
     ));
   }
 
-  Future<String> _serverLogin(String email, String password, {Map body}) async {
+  Future<User> _serverLogin({Map body}) async {
     final response = await http.post(BASE_URL + '/api/login', body: body);
     ProgressHud.of(context).dismiss();
     if (response.statusCode == 200) {
-      _loginTokenSaver(email, password);
-      return response.body;
+      return User.fromJson(json.decode(response.body));
     } else {
       // If that call was not successful, throw an error.
       _createToast('Email and password miss-match.');

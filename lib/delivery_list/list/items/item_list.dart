@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kolas_rail/Details/stock_list.dart';
-import '../model/item.dart';
-import '../../../Details/stock_list.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:kolas_rail/model/item.dart';
 
 class ListItems {
 

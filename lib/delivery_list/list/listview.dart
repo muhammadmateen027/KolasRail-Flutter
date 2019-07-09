@@ -1,16 +1,12 @@
 import 'package:flutter/material.dart';
 import '../../constants/stacked_icons.dart';
 import 'items/item_list.dart';
-import 'model/lessons.dart';
-import 'package:bmprogresshud/bmprogresshud.dart';
-import 'model/item.dart';
+import 'package:kolas_rail/model/item.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
-import 'dart:async';
-import 'dart:convert';
 
 // https://github.com/fabiomsr/Flutter-StepByStep
 // https://proandroiddev.com/flutter-thursday-02-beautiful-list-ui-and-detail-page-a9245f5ceaf0
@@ -37,7 +33,6 @@ class _ListPageState extends State<ListPage> {
   List lessons;
   AppBackground app = new AppBackground();
   ListItems lItem = new ListItems();
-  Lesson lessonClass = new Lesson();
   List<Product> items = List();
 
   final String appName = "Kolas Rail";

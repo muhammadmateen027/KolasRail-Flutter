@@ -3,20 +3,25 @@ import 'package:kolas_rail/model/item.dart';
 
 class ListItems {
 
-  Card getCard(BuildContext context, Success lesson) {
+  Card getCard(BuildContext context, Success lesson, String email, String password) {
     return new Card(
       elevation: 8.0,
       margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
       child: Container(
         decoration: BoxDecoration(color: Colors.white70),
-        child: getTile(context, lesson),
+        child: getTile(context, lesson, email, password),
       ),
     );
   }
 
-  ListTile getTile(BuildContext context, Success lesson) {
+  ListTile getTile(BuildContext context, Success lesson, String email, String password) {
     String status = "";
     int color;
+
+    List<String> list = new List();
+    list.add(email);
+    list.add(password);
+    list.add(lesson.reqId.toString());
 
     if (lesson.reqStatus == 3) {
       color = 0xFFff8b54;
@@ -108,14 +113,14 @@ class ListItems {
         ],
       ),
 
-      onTap: () => pushToActivity(context, lesson),
+      onTap: () => pushToActivity(context, list),
     );
   }
 
   // goto Next Activity as
-  void pushToActivity(BuildContext context, Success lesson) {
-    print("======>>>>>  " + lesson.reqId.toString());
-    Navigator.of(context).pushNamed('/stockList', arguments: lesson.reqId);
+  void pushToActivity(BuildContext context, List<String> list) {
+    // print("======>>>>>  " + lesson.reqId.toString());
+    Navigator.of(context).pushNamed('/stockList', arguments: list);
     // Navigator.of(context).push(
     //     MaterialPageRoute(builder: (context) => StockItemDetail(itemId: lesson.reqId)));
 

@@ -44,6 +44,8 @@ class _ListPageState extends State<ListPage> {
     logs = new Map<String, dynamic>();
     logs["email"] = widget.args[0];
     logs["password"] = widget.args[1];
+
+    lItem = new ListItems();
     super.initState();
   }
     Future<List> _getSharedPref() async {
@@ -54,7 +56,6 @@ class _ListPageState extends State<ListPage> {
 
   @override
   Widget build(BuildContext context) {
-    print("+*+*+*+*+*+*+*+ "+widget.args[0]+" +*++*+*+*+*+*+*+");
     return Scaffold(
       // appBar: topAppBar(appName),
       appBar: new AppBar(
@@ -92,7 +93,7 @@ class _ListPageState extends State<ListPage> {
                           shrinkWrap: true,
                           itemCount: pr.success.length,
                           itemBuilder: (BuildContext context, int index) {
-                            return lItem.getCard(context, pr.success[index]);
+                            return lItem.getCard(context, pr.success[index], widget.args[0], widget.args[1]);
                           },
                         );
                       }

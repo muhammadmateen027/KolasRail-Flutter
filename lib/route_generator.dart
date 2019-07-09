@@ -17,8 +17,8 @@ class RouteGenerator {
         }
         return _errorRoute();
       case '/stockList':
-        if(args is int) {
-          return MaterialPageRoute(builder: (_) => StockItemDetail(itemId: args,));
+        if(args is List<String>) {
+          return MaterialPageRoute(builder: (_) => StockItemDetail(args: args,));
         } else {
           print("Type is not confimed:"+ args.toString());
         }

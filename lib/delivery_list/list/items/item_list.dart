@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:kolas_rail/model/item.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ListItems {
-
-  Card getCard(BuildContext context, Success lesson, String email, String password) {
+  Card getCard(
+      BuildContext context, Success lesson, String email, String password) {
     return new Card(
       elevation: 8.0,
       margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
@@ -14,7 +15,8 @@ class ListItems {
     );
   }
 
-  ListTile getTile(BuildContext context, Success lesson, String email, String password) {
+  ListTile getTile(
+      BuildContext context, Success lesson, String email, String password) {
     String status = "";
     int color;
 
@@ -22,21 +24,41 @@ class ListItems {
     list.add(email);
     list.add(password);
     list.add(lesson.reqId.toString());
+    list.add(lesson.project.toString());
+    list.add(lesson.document.toString());
+    list.add(lesson.desc.toString());
+    list.add(lesson.originName.toString());
+    list.add(lesson.originAddress.toString());
+    list.add(lesson.destinationName.toString());
+    list.add(lesson.destinationAddress.toString());
+
+    // List xs = [
+    //             lesson.project.toString(),
+    //              lesson.document.toString(),
+    //              lesson.desc.toString(),
+    //              lesson.originName.toString(),
+    //              lesson.originAddress.toString(),
+    //              lesson.destinationName.toString(),
+    //              lesson.destinationAddress.toString()
+    //           ];
 
     if (lesson.reqStatus == 3) {
       color = 0xFFff8b54;
       status = "Pending";
-    } else {
-      status = "Received";
+    } else if (lesson.reqStatus == 5) {
+      status = "Delivered";
       color = 0xFF009933;
+    } else {
+      status = "Unknown";
     }
+
     return new ListTile(
       contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
       title: Container(
         child:
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           Text(
-            lesson.project,
+            lesson.project.trimRight(),
             style: TextStyle(
                 color: Colors.black45,
                 fontWeight: FontWeight.bold,
@@ -119,21 +141,9 @@ class ListItems {
 
   // goto Next Activity as
   void pushToActivity(BuildContext context, List<String> list) {
-    // print("======>>>>>  " + lesson.reqId.toString());
     Navigator.of(context).pushNamed('/stockList', arguments: list);
-    // Navigator.of(context).push(
-    //     MaterialPageRoute(builder: (context) => StockItemDetail(itemId: lesson.reqId)));
-
-    // Navigator.push(context,
-    //     MaterialPageRoute(builder: (context) => StockItemDetail(itemId: lesson.reqId)));
-    // _loginTokenSaver();
   }
 
-  // _loginTokenSaver() async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   await prefs.setStringList('auth', []);
-  //   // print('Stored Value is: ' + prefs.getStringList('auth').toString() ?? []);
-  // }
 
   Stack getSmallTick(int reqStatus) {
     int color;

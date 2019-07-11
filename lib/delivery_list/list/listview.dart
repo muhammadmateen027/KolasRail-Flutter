@@ -61,6 +61,7 @@ class _ListPageState extends State<ListPage> {
       ),
       backgroundColor: Color.fromRGBO(40, 55, 77, 1.0),
       drawer: app.appDrawer(context),
+      
       body: Container(
         decoration: app.appBackground(),
         child: Center(
@@ -117,33 +118,33 @@ class _ListPageState extends State<ListPage> {
       );
 
   // Bottom Icons and bar
-  final makeBottom = Container(
-    height: 55.0,
-    child: BottomAppBar(
-      color: Color.fromRGBO(58, 66, 86, 1.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[
-          IconButton(
-            icon: Icon(Icons.home, color: Colors.white),
-            onPressed: () {},
-          ),
-          IconButton(
-            icon: Icon(Icons.blur_on, color: Colors.white),
-            onPressed: () {},
-          ),
-          IconButton(
-            icon: Icon(Icons.hotel, color: Colors.white),
-            onPressed: () {},
-          ),
-          IconButton(
-            icon: Icon(Icons.account_box, color: Colors.white),
-            onPressed: () {},
-          )
-        ],
-      ),
-    ),
-  );
+  // final makeBottom = Container(
+  //   height: 55.0,
+  //   child: BottomAppBar(
+  //     color: Color.fromRGBO(58, 66, 86, 1.0),
+  //     child: Row(
+  //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //       children: <Widget>[
+  //         IconButton(
+  //           icon: Icon(Icons.home, color: Colors.white),
+  //           onPressed: () {},
+  //         ),
+  //         IconButton(
+  //           icon: Icon(Icons.blur_on, color: Colors.white),
+  //           onPressed: () {},
+  //         ),
+  //         IconButton(
+  //           icon: Icon(Icons.hotel, color: Colors.white),
+  //           onPressed: () {},
+  //         ),
+  //         IconButton(
+  //           icon: Icon(Icons.account_box, color: Colors.white),
+  //           onPressed: () {},
+  //         )
+  //       ],
+  //     ),
+  //   ),
+  // );
 
   Future<Product> fetchData() async {
     final response = await http.post(BASE_URL + '/api/list', body: logs);

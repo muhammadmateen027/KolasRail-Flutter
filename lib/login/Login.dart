@@ -117,7 +117,7 @@ class LoginState extends State<LoginPageContent> {
                     const EdgeInsets.only(left: 20.0, right: 20.0, top: 30.0),
                 child: GestureDetector(
                     onTap: () => _onLoginTapped(context,
-                        _emailtextController.text, _passwodtextController.text),
+                        _emailtextController.text.toLowerCase(), _passwodtextController.text.toLowerCase()),
                     child: Container(
                       alignment: Alignment.center,
                       height: 60.0,

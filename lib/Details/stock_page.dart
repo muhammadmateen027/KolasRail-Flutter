@@ -6,8 +6,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:kolas_rail/model/usermodel.dart';
 
-
-
 class StockItemDetail extends StatefulWidget {
   final List<String> args;
   StockItemDetail({Key key, @required this.args}) : super(key: key);
@@ -45,16 +43,17 @@ class _ListPageState extends State<StockItemDetail> {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           logs["status"] = "5";
-          _serverUpdate(body: logs);
+          Future<User> userResult = _serverUpdate(body: logs);
+          userResult.then((val) {
+          });
         },
         icon: Icon(Icons.local_shipping),
         label: Text("Confirm delivery"),
         backgroundColor: Colors.green,
-        
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          decoration: app.appBackground(),
+      body: Container(
+        decoration: app.appBackground(),
+        child: SingleChildScrollView(
           child: Center(
             child: new Container(
               alignment: Alignment(-1.0, -1.0),
@@ -68,6 +67,7 @@ class _ListPageState extends State<StockItemDetail> {
                   //       fontWeight: FontWeight.bold,
                   //       fontSize: 18.0),
                   // )),
+
                   FutureBuilder<Stock>(
                       future: fetchData(body: logs),
                       builder: (context, snapshot) {
@@ -101,6 +101,7 @@ class _ListPageState extends State<StockItemDetail> {
                             }
                         }
                       }),
+                
                 ],
               ),
             ),
@@ -111,7 +112,6 @@ class _ListPageState extends State<StockItemDetail> {
   }
 
   Future<Stock> fetchData({Map body}) async {
-
     final response = await http.post(BASE_URL + '/api/stocklist', body: logs);
 
     if (response.statusCode == 200) {
@@ -121,6 +121,7 @@ class _ListPageState extends State<StockItemDetail> {
       throw Exception('Failed to load post');
     }
   }
+
 
   Card getCard(BuildContext context, Success success) {
     return new Card(
@@ -146,7 +147,7 @@ class _ListPageState extends State<StockItemDetail> {
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           Container(
             // padding: const EdgeInsets.all(8.0),
-            width: MediaQuery.of(context).size.width * 0.8,
+            width: MediaQuery.of(context).size.width * 0.7,
             child: Text(
               lesson.iname.trimRight(),
               style: TextStyle(
@@ -293,5 +294,4 @@ class _ListPageState extends State<StockItemDetail> {
       throw Exception('Failed to load post');
     }
   }
-
 }

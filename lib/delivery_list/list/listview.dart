@@ -26,6 +26,7 @@ class ListPage extends StatefulWidget {
 }
 
 class _ListPageState extends State<ListPage> {
+  Product pr;
   var logs;
   List lessons;
   AppBackground app = new AppBackground();
@@ -36,12 +37,9 @@ class _ListPageState extends State<ListPage> {
 
   @override
   void initState() {
-    // ProgressHud.of(context).show(ProgressHudType.loading, "Loading...");
-
     logs = new Map<String, dynamic>();
     logs["email"] = widget.args[0];
     logs["password"] = widget.args[1];
-
     super.initState();
   }
 
@@ -51,6 +49,12 @@ class _ListPageState extends State<ListPage> {
     return prefs.getStringList('auth') ?? [];
   }
 
+  Future<Null> _refresh() {
+  return fetchData().then((_user) {
+      setState(() => pr = _user);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,45 +62,58 @@ class _ListPageState extends State<ListPage> {
       appBar: new AppBar(
         title: Text("Delivery List"),
         backgroundColor: const Color(0xFFff8b54),
+
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.rotate_left),
+            color: Color(0xFFFFFFFF),
+            onPressed: () {
+              _refresh();
+            },
+          )
+        ],
       ),
       backgroundColor: Color.fromRGBO(40, 55, 77, 1.0),
       drawer: app.appDrawer(context),
       
-      body: Container(
-        decoration: app.appBackground(),
-        child: Center(
-          child: new Container(
-            alignment: Alignment(-1.0, -1.0),
-            child: FutureBuilder<Product>(
-                future: fetchData(),
-                builder: (context, snapshot) {
-                  switch (snapshot.connectionState) {
-                    case ConnectionState.none:
-                      return new Text('Input a URL to start');
-                    case ConnectionState.waiting:
-                      return new Center(child: new CircularProgressIndicator());
-                    case ConnectionState.active:
-                      return new Text('');
-                    case ConnectionState.done:
-                      if (snapshot.hasError) {
-                        return new Text(
-                          '${snapshot.error}',
-                          style: TextStyle(color: Colors.black),
-                        );
-                      } else {
-                        Product pr = snapshot.data;
-                        return new ListView.builder(
-                          scrollDirection: Axis.vertical,
-                          shrinkWrap: true,
-                          itemCount: pr.success.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return getCard(context, pr.success[index],
-                                widget.args[0], widget.args[1]);
-                          },
-                        );
-                      }
-                  }
-                }),
+      body: RefreshIndicator(
+        onRefresh: _refresh,
+        child: Container(
+          decoration: app.appBackground(),
+          child: Center(
+            child: new Container(
+              alignment: Alignment(-1.0, -1.0),
+              child: FutureBuilder<Product>(
+                  future: fetchData(),
+                  builder: (context, snapshot) {
+                    switch (snapshot.connectionState) {
+                      case ConnectionState.none:
+                        return new Text('Input a URL to start');
+                      case ConnectionState.waiting:
+                        return new Center(child: new CircularProgressIndicator());
+                      case ConnectionState.active:
+                        return new Text('');
+                      case ConnectionState.done:
+                        if (snapshot.hasError) {
+                          return new Text(
+                            '${snapshot.error}',
+                            style: TextStyle(color: Colors.black),
+                          );
+                        } else {
+                          pr = snapshot.data;
+                          return new ListView.builder(
+                            scrollDirection: Axis.vertical,
+                            shrinkWrap: true,
+                            itemCount: pr.success.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return getCard(context, pr.success[index],
+                                  widget.args[0], widget.args[1]);
+                            },
+                          );
+                        }
+                    }
+                  }),
+            ),
           ),
         ),
       ),

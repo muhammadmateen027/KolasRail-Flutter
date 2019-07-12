@@ -108,10 +108,11 @@ class StackedIcons extends StatelessWidget {
           decoration: new BoxDecoration(
               borderRadius: new BorderRadius.circular(50.0),
               color: Color(0xFF18D191)),
-          child: new Icon(
-            Icons.local_offer,
-            color: Colors.white,
-          ),
+              child: Image.asset('assets/kolas_logo.jpeg.png'),
+          // child: new Icon(
+          //   Icons.local_offer,
+          //   color: Colors.white,
+          // ),
         ), //local_offer
       ],
     );

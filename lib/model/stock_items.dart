@@ -2,16 +2,49 @@ import 'dart:convert';
 
 class Stock {
   final List<Success> success;
-  Stock({this.success});
+  int reqId;
+  int reqStatus;
+  String project;
+  String document;
+  String desc;
+
+  String originName;
+  String originAddress;
+  String destinationName;
+  String destinationAddress;
+
+  Stock(
+      {this.success,
+      this.reqId,
+      this.reqStatus,
+      this.project,
+      this.document,
+      this.desc,
+      this.originName,
+      this.originAddress,
+      this.destinationName,
+      this.destinationAddress});
 
   factory Stock.fromJson(Map<String, dynamic> parsedJson) {
     var list = parsedJson['success'] as List;
     
+
     print(list.runtimeType);
     List<Success> successList = list.map((i) => Success.fromJson(i)).toList();
 
     return Stock(
       success: successList,
+      reqId: parsedJson['req_id'],
+      reqStatus: parsedJson['req_status'],
+      project: parsedJson['project'],
+      document: parsedJson['document'],
+      desc: parsedJson['desc'],
+
+
+      originName: parsedJson['origin_name'],
+      originAddress: parsedJson['origin_address'],
+      destinationName: parsedJson['destination_name'],
+      destinationAddress: parsedJson['destination_address'],
     );
   }
 }
@@ -51,8 +84,6 @@ class Success {
       comment: parsedJson['comment'],
       qty: parsedJson['qty'],
       app_qty: parsedJson['app_qty'],
-
-
       app_comment: parsedJson['app_comment'],
       iname: parsedJson['iname'],
       sku: parsedJson['sku'],

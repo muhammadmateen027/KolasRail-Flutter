@@ -12,15 +12,17 @@ class Login extends StatelessWidget {
   // final String title;
   AppBackground app;
 
-
   Login({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     app = new AppBackground();
     _getSharedPref().then((value) {
       if (value.length > 0) {
-        // Navigator.pushReplacementNamed(
-        // context, '/deliveryList');
+        List<String> list = new List();
+        list.add(value[0]);
+        list.add(value[1]);
+        Navigator.pushReplacementNamed(context, '/deliveryList',
+            arguments: list);
       }
     });
     // TODO: implement build
@@ -28,11 +30,12 @@ class Login extends StatelessWidget {
       onTap: () => FocusScope.of(context).requestFocus(new FocusNode()),
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Kolas Rail"),
+          automaticallyImplyLeading: false,
+          // title: Text("Kolas Rail"),
           backgroundColor: const Color(0xFFff8b54),
         ),
         backgroundColor: Color.fromRGBO(40, 55, 77, 1.0),
-        drawer: app.appDrawer(context),
+        // drawer: app.appDrawer(context),
         body: ProgressHud(
           child: Container(
             // Add box decoration
@@ -72,13 +75,18 @@ class LoginState extends State<LoginPageContent> {
 
   @override
   Widget build(BuildContext context) {
-    
     print("Hello World");
     // TODO: implement build
     return Column(
       children: <Widget>[
         // _progressHUD,
-        new StackedIcons(),
+        // new StackedIcons(),
+        Container(
+          height: 90,
+          width: 90,
+          child: Image.asset('assets/kolas_logo.jpeg')
+        ),
+
         new AppName(),
         new Container(
           width: MediaQuery.of(context).size.width - 30,
@@ -116,8 +124,10 @@ class LoginState extends State<LoginPageContent> {
                 padding:
                     const EdgeInsets.only(left: 20.0, right: 20.0, top: 30.0),
                 child: GestureDetector(
-                    onTap: () => _onLoginTapped(context,
-                        _emailtextController.text.toLowerCase(), _passwodtextController.text.toLowerCase()),
+                    onTap: () => _onLoginTapped(
+                        context,
+                        _emailtextController.text.toLowerCase(),
+                        _passwodtextController.text.toLowerCase()),
                     child: Container(
                       alignment: Alignment.center,
                       height: 60.0,
@@ -214,7 +224,8 @@ class LoginState extends State<LoginPageContent> {
     List<String> list = new List();
     list.add(email);
     list.add(password);
-    Navigator.of(context).pushReplacementNamed('/deliveryList', arguments: list);
+    Navigator.of(context)
+        .pushReplacementNamed('/deliveryList', arguments: list);
     // Navigator.of(context).pop();
   }
 }

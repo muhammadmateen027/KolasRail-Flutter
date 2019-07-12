@@ -74,7 +74,7 @@ class _ListPageState extends State<ListPage> {
         ],
       ),
       backgroundColor: Color.fromRGBO(40, 55, 77, 1.0),
-      drawer: app.appDrawer(context),
+      // drawer: app.appDrawer(context),
       
       body: RefreshIndicator(
         onRefresh: _refresh,

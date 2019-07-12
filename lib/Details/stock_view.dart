@@ -16,6 +16,9 @@ class _ListPageState extends State<StockItemDetail> {
   List<String> list;
   var logs;
   AppBackground app = new AppBackground();
+
+  String buttonName = "Confirm Delivery";
+
   @override
   Widget build(BuildContext context) {
     list = new List();
@@ -26,9 +29,10 @@ class _ListPageState extends State<StockItemDetail> {
     logs["email"] = widget.args[0];
     logs["password"] = widget.args[1];
     logs["req_id"] = widget.args[2];
+
+    print(widget.args[2]);
     // TODO: implement build
     return Scaffold(
-      // appBar: topAppBar(appName),
       appBar: new AppBar(
         title: Text("Stock List"),
         backgroundColor: const Color(0xFFff8b54),
@@ -37,75 +41,67 @@ class _ListPageState extends State<StockItemDetail> {
           onPressed: () => Navigator.pop(context),
         ),
       ),
-      backgroundColor: Color.fromRGBO(40, 55, 77, 1.0),
-      // drawer: app.appDrawer(context),
-      // bottomNavigationBar: makeBottom,
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           logs["status"] = "5";
-          Future<User> userResult = _serverUpdate(body: logs);
-          userResult.then((val) {});
+          _serverUpdate(body: logs);
         },
         icon: Icon(Icons.local_shipping),
-        label: Text("Confirm delivery"),
+        label: Text(buttonName),
         backgroundColor: Colors.green,
       ),
+      backgroundColor: Color.fromRGBO(40, 55, 77, 1.0),
       body: Container(
         decoration: app.appBackground(),
-        child: SingleChildScrollView(
-          child: Center(
-            child: new Container(
-              alignment: Alignment(-1.0, -1.0),
-              child: Column(
-                children: <Widget>[
-                  // Container(
-                  //     child: Text(
-                  //   widget.args[1],
-                  //   style: TextStyle(
-                  //       color: Colors.black45,
-                  //       fontWeight: FontWeight.bold,
-                  //       fontSize: 18.0),
-                  // )),
-
-                  FutureBuilder<Stock>(
-                      future: fetchData(body: logs),
-                      builder: (context, snapshot) {
-                        switch (snapshot.connectionState) {
-                          case ConnectionState.none:
-                            return new Text('Input a URL to start');
-                          case ConnectionState.waiting:
-                            return new Center(
-                                child: new CircularProgressIndicator());
-                          case ConnectionState.active:
-                            return new Text('');
-                          case ConnectionState.done:
-                            if (snapshot.hasError) {
-                              return new Text(
-                                '${snapshot.error}',
-                                style: TextStyle(color: Colors.black),
-                              );
-                            } else {
-                              Stock pr = snapshot.data;
-                              Container(
-                                child: Text("Hello World"),
-                              );
-                              return new ListView.builder(
-                                scrollDirection: Axis.vertical,
-                                shrinkWrap: true,
-                                itemCount: pr.success.length,
-                                itemBuilder: (BuildContext context, int index) {
-                                  return getCard(
-                                    context,
-                                    pr.success[index],
-                                  );
-                                },
-                              );
+        child: Center(
+          child: new Container(
+            alignment: Alignment(-1.0, -1.0),
+            child: FutureBuilder<Stock>(
+                future: fetchData(body: logs),
+                builder: (context, snapshot) {
+                  switch (snapshot.connectionState) {
+                    case ConnectionState.none:
+                      return new Text('Input a URL to start');
+                    case ConnectionState.waiting:
+                      return new Center(child: new CircularProgressIndicator());
+                    case ConnectionState.active:
+                      return new Text('');
+                    case ConnectionState.done:
+                      if (snapshot.hasError) {
+                        return new Text(
+                          '${snapshot.error}',
+                          style: TextStyle(color: Colors.black),
+                        );
+                      } else {
+                        Stock pr = snapshot.data;
+                        return new ListView.builder(
+                          scrollDirection: Axis.vertical,
+                          shrinkWrap: true,
+                          itemCount:
+                              pr.success == null ? 1 : pr.success.length + 1,
+                          itemBuilder: (BuildContext context, int index) {
+                            print(index.toString() +
+                                ": Length: " +
+                                pr.success.length.toString());
+                            if (index == 0) {
+                              // return the header
+                              // if (pr.reqStatus == 3) {
+                              //   setState(() {
+                              //     buttonName = "Delivered";
+                              //   });
+                              // }
+                              return getHeadings(pr);
                             }
-                        }
-                      }),
-                ],
-              ),
-            ),
+                            index -= 1;
+                            return getCard(
+                              context,
+                              pr.success[index],
+                            );
+                          },
+                        );
+                      }
+                  }
+                }),
           ),
         ),
       ),
@@ -284,9 +280,143 @@ class _ListPageState extends State<StockItemDetail> {
     );
   }
 
-  Future<User> _serverUpdate({Map body}) async {
+  ListTile getHeadings(Stock lesson) {
+    logs["status"] = "5";
+    return new ListTile(
+      contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+      title: Container(
+        child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Container(
+            child: Text(
+              "Project: ",
+              style: TextStyle(
+                  color: Colors.black45, fontWeight: FontWeight.normal),
+            ),
+          ),
+          Container(
+            child: Text(
+              lesson.project.toString(),
+              style:
+                  TextStyle(color: Colors.black45, fontWeight: FontWeight.bold),
+            ),
+          ),
+        ]),
+      ),
+      // subtitle: Text("Intermediate", style: TextStyle(color: Colors.white)),
+      subtitle: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                child: Text(
+                  "Document: ",
+                  style: TextStyle(
+                      color: Colors.black45, fontWeight: FontWeight.normal),
+                ),
+              ),
+              Container(
+                child: Text(
+                  lesson.document.toString(),
+                  style: TextStyle(
+                      color: Colors.black45, fontWeight: FontWeight.bold),
+                ),
+              ),
+            ],
+          ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                child: Text(
+                  "Origin Name: ",
+                  style: TextStyle(
+                      color: Colors.black45, fontWeight: FontWeight.normal),
+                ),
+              ),
+              Container(
+                child: Text(
+                  lesson.originName.toString(),
+                  style: TextStyle(
+                      color: Colors.black45, fontWeight: FontWeight.bold),
+                ),
+              ),
+            ],
+          ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                child: Text(
+                  "Destination: ",
+                  style: TextStyle(
+                      color: Colors.black45, fontWeight: FontWeight.normal),
+                ),
+              ),
+              Container(
+                child: Text(
+                  lesson.destinationName.toString(),
+                  style: TextStyle(
+                      color: Colors.black45, fontWeight: FontWeight.bold),
+                ),
+              ),
+            ],
+          ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                child: Text(
+                  "Destination Address: ",
+                  style: TextStyle(
+                      color: Colors.black45, fontWeight: FontWeight.normal),
+                ),
+              ),
+              Container(
+                child: Text(
+                  lesson.destinationAddress.toString(),
+                  style: TextStyle(
+                      color: Colors.black45, fontWeight: FontWeight.bold),
+                ),
+              ),
+            ],
+          ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                child: Text(
+                  "Origin Address: ",
+                  style: TextStyle(
+                      color: Colors.black45, fontWeight: FontWeight.normal),
+                ),
+              ),
+              Container(
+                child: Text(
+                  lesson.originAddress.toString(),
+                  style: TextStyle(
+                      color: Colors.black45, fontWeight: FontWeight.bold),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+
+      // onTap: () =>
+      //     {Navigator.of(context).pushNamed('/detailPage', arguments: list)},
+    );
+  }
+
+  _serverUpdate({Map body}) async {
     final response = await http.post(BASE_URL + '/api/update', body: body);
     if (response.statusCode == 200) {
+      print(response.body);
+      setState(() {
+        buttonName = "Delivered";
+        // Navigator.of(context).pop();
+      });
       // _createToast('Delivery confirmed.');
       return User.fromJson(json.decode(response.body));
     } else {

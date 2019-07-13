@@ -1,95 +1,150 @@
 import 'dart:convert';
 
 class Stock {
-  final List<Success> success;
   int reqId;
   int reqStatus;
   String project;
   String document;
   String desc;
-
+  String createdAt;
+  String createBy;
   String originName;
+  String originCode;
   String originAddress;
+  String originZip;
+  String originState;
   String destinationName;
+  String destinationCode;
   String destinationAddress;
+  String destinationZip;
+  String destinationState;
+  List<Success> success;
 
   Stock(
-      {this.success,
-      this.reqId,
+      {this.reqId,
       this.reqStatus,
       this.project,
       this.document,
       this.desc,
+      this.createdAt,
+      this.createBy,
       this.originName,
+      this.originCode,
       this.originAddress,
+      this.originZip,
+      this.originState,
       this.destinationName,
-      this.destinationAddress});
+      this.destinationCode,
+      this.destinationAddress,
+      this.destinationZip,
+      this.destinationState,
+      this.success});
 
-  factory Stock.fromJson(Map<String, dynamic> parsedJson) {
-    var list = parsedJson['success'] as List;
-    
+  Stock.fromJson(Map<String, dynamic> json) {
+    reqId = json['req_id'];
+    reqStatus = json['req_status'];
+    project = json['project'];
+    document = json['document'];
+    desc = json['desc'];
+    createdAt = json['created_at'];
+    createBy = json['create_by'];
+    originName = json['origin_name'];
+    originCode = json['origin_code'];
+    originAddress = json['origin_address'];
+    originZip = json['origin_zip'];
+    originState = json['origin_state'];
+    destinationName = json['destination_name'];
+    destinationCode = json['destination_code'];
+    destinationAddress = json['destination_address'];
+    destinationZip = json['destination_zip'];
+    destinationState = json['destination_state'];
+    if (json['success'] != null) {
+      success = new List<Success>();
+      json['success'].forEach((v) {
+        success.add(new Success.fromJson(v));
+      });
+    }
+  }
 
-    print(list.runtimeType);
-    List<Success> successList = list.map((i) => Success.fromJson(i)).toList();
-
-    return Stock(
-      success: successList,
-      reqId: parsedJson['req_id'],
-      reqStatus: parsedJson['req_status'],
-      project: parsedJson['project'],
-      document: parsedJson['document'],
-      desc: parsedJson['desc'],
-
-
-      originName: parsedJson['origin_name'],
-      originAddress: parsedJson['origin_address'],
-      destinationName: parsedJson['destination_name'],
-      destinationAddress: parsedJson['destination_address'],
-    );
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['req_id'] = this.reqId;
+    data['req_status'] = this.reqStatus;
+    data['project'] = this.project;
+    data['document'] = this.document;
+    data['desc'] = this.desc;
+    data['created_at'] = this.createdAt;
+    data['create_by'] = this.createBy;
+    data['origin_name'] = this.originName;
+    data['origin_code'] = this.originCode;
+    data['origin_address'] = this.originAddress;
+    data['origin_zip'] = this.originZip;
+    data['origin_state'] = this.originState;
+    data['destination_name'] = this.destinationName;
+    data['destination_code'] = this.destinationCode;
+    data['destination_address'] = this.destinationAddress;
+    data['destination_zip'] = this.destinationZip;
+    data['destination_state'] = this.destinationState;
+    if (this.success != null) {
+      data['success'] = this.success.map((v) => v.toJson()).toList();
+    }
+    return data;
   }
 }
 
 class Success {
   int rid;
-  int stock_status;
+  int stockStatus;
   String comment;
   String qty;
-  String app_qty;
-
-  String app_comment;
+  String appQty;
+  String appComment;
   String iname;
   String sku;
   String category;
-  String created;
   String unit;
   String added;
 
   Success(
       {this.rid,
-      this.stock_status,
+      this.stockStatus,
       this.comment,
       this.qty,
-      this.app_qty,
-      this.app_comment,
+      this.appQty,
+      this.appComment,
       this.iname,
       this.sku,
       this.category,
       this.unit,
       this.added});
 
-  factory Success.fromJson(Map<String, dynamic> parsedJson) {
-    return Success(
-      rid: parsedJson['rid'],
-      stock_status: parsedJson['stock_status'],
-      comment: parsedJson['comment'],
-      qty: parsedJson['qty'],
-      app_qty: parsedJson['app_qty'],
-      app_comment: parsedJson['app_comment'],
-      iname: parsedJson['iname'],
-      sku: parsedJson['sku'],
-      category: parsedJson['category'],
-      unit: parsedJson['unit'],
-      added: parsedJson['added'],
-    );
+  Success.fromJson(Map<String, dynamic> json) {
+    rid = json['rid'];
+    stockStatus = json['stock_status'];
+    comment = json['comment'];
+    qty = json['qty'];
+    appQty = json['app_qty'];
+    appComment = json['app_comment'];
+    iname = json['iname'];
+    sku = json['sku'];
+    category = json['category'];
+    unit = json['unit'];
+    added = json['added'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['rid'] = this.rid;
+    data['stock_status'] = this.stockStatus;
+    data['comment'] = this.comment;
+    data['qty'] = this.qty;
+    data['app_qty'] = this.appQty;
+    data['app_comment'] = this.appComment;
+    data['iname'] = this.iname;
+    data['sku'] = this.sku;
+    data['category'] = this.category;
+    data['unit'] = this.unit;
+    data['added'] = this.added;
+    return data;
   }
 }

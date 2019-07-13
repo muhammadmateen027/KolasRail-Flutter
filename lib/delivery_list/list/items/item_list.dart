@@ -64,7 +64,8 @@ class ListItems {
                 fontWeight: FontWeight.bold,
                 fontSize: 18.0),
           ),
-          new Row(
+
+          Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
@@ -94,7 +95,29 @@ class ListItems {
                   color: Colors.black45, fontWeight: FontWeight.normal),
             ),
           ),
+
           Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                child: Text(
+                  "Created By: ",
+                  style: TextStyle(
+                      color: Colors.black45, fontWeight: FontWeight.normal),
+                ),
+              ),
+              Container(
+                child: Text(
+                  lesson.createBy,
+                  style: TextStyle(
+                      color: Colors.black45, fontWeight: FontWeight.bold),
+                ),
+              ),
+            ],
+          ),
+
+
+Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
@@ -113,6 +136,7 @@ class ListItems {
               ),
             ],
           ),
+
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

@@ -136,7 +136,7 @@ class _ListPageState extends State<StockItemDetail> {
     list.add(widget.args[1]);
     list.add(lesson.rid.toString());
 
-    print("Requested Quantity: " + lesson.app_qty);
+    print("Requested Quantity: " + lesson.appQty);
 
     return new ListTile(
       contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
@@ -229,7 +229,7 @@ class _ListPageState extends State<StockItemDetail> {
               ),
               Container(
                 child: Text(
-                  lesson.app_qty.toString(),
+                  lesson.appQty.toString(),
                   style: TextStyle(
                       color: Colors.black45, fontWeight: FontWeight.bold),
                 ),
@@ -248,7 +248,7 @@ class _ListPageState extends State<StockItemDetail> {
               ),
               Container(
                 child: Text(
-                  lesson.app_comment.toString(),
+                  lesson.appComment.toString(),
                   style: TextStyle(
                       color: Colors.black45, fontWeight: FontWeight.bold),
                 ),
@@ -283,18 +283,19 @@ class _ListPageState extends State<StockItemDetail> {
   }
 
   ListTile getHeadings(Stock lesson) {
+    print("Request Stat: " + lesson.reqStatus.toString());
     logs["status"] = "5";
     return new ListTile(
       contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
       title: Container(
         child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Container(
-            child: Text(
-              "Project: ",
-              style: TextStyle(
-                  color: Colors.black45, fontWeight: FontWeight.normal),
-            ),
-          ),
+          // Container(
+          //   child: Text(
+          //     "Project: ",
+          //     style: TextStyle(
+          //         color: Colors.black45, fontWeight: FontWeight.normal),
+          //   ),
+          // ),
           Container(
             child: Text(
               lesson.project.toString(),
@@ -315,20 +316,41 @@ class _ListPageState extends State<StockItemDetail> {
               children: [
                 Container(
                   child: Text(
-                    "Document: ",
+                    "Created By: ",
+                    style: TextStyle(
+                        color: Colors.black45, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Container(
+                  child: Text(
+                    lesson.createBy.toString(),
                     style: TextStyle(
                         color: Colors.black45, fontWeight: FontWeight.normal),
+                  ),
+                ),
+              ],
+            ),
+
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  child: Text(
+                    "Document: ",
+                    style: TextStyle(
+                        color: Colors.black45, fontWeight: FontWeight.bold),
                   ),
                 ),
                 Container(
                   child: Text(
                     lesson.document.toString(),
                     style: TextStyle(
-                        color: Colors.black45, fontWeight: FontWeight.bold),
+                        color: Colors.black45, fontWeight: FontWeight.normal),
                   ),
                 ),
               ],
             ),
+
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -336,18 +358,24 @@ class _ListPageState extends State<StockItemDetail> {
                   child: Text(
                     "Origin Name: ",
                     style: TextStyle(
-                        color: Colors.black45, fontWeight: FontWeight.normal),
+                        color: Colors.black45, fontWeight: FontWeight.bold),
                   ),
                 ),
-                Container(
+                Expanded(
                   child: Text(
-                    lesson.originName.toString(),
+                    lesson.originName.toString() +'['+lesson.originCode.toString()+']' +
+                      ', ' +
+                      lesson.originAddress +
+                      ', ' +
+                      lesson.originZip.toString()+ 
+                      ', ' + lesson.originState.toString()+ '.',
                     style: TextStyle(
-                        color: Colors.black45, fontWeight: FontWeight.bold),
+                        color: Colors.black45, fontWeight: FontWeight.normal),
                   ),
                 ),
               ],
             ),
+
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -355,50 +383,39 @@ class _ListPageState extends State<StockItemDetail> {
                   child: Text(
                     "Destination: ",
                     style: TextStyle(
+                        color: Colors.black45, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Expanded(
+                  child: Text(
+                    lesson.destinationName +'['+lesson.destinationCode.toString()+']' +
+                      ', ' +
+                      lesson.destinationAddress +
+                      ', ' +
+                      lesson.destinationZip.toString()+ 
+                      ', ' + lesson.destinationState.toString()+ '.',
+                    style: TextStyle(
                         color: Colors.black45, fontWeight: FontWeight.normal),
+                  ),
+                ),
+              ],
+            ),
+
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  child: Text(
+                    "Created at: ",
+                    style: TextStyle(
+                        color: Colors.black45, fontWeight: FontWeight.bold),
                   ),
                 ),
                 Container(
                   child: Text(
-                    lesson.destinationName.toString(),
+                    lesson.createdAt.toString(),
                     style: TextStyle(
-                        color: Colors.black45, fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Origin Address: ",
-                  style: TextStyle(
-                      color: Colors.black45, fontWeight: FontWeight.normal),
-                ),
-                Expanded(
-                  child: Text(
-                    lesson.originAddress.toString(),
-                    style: TextStyle(
-                        color: Colors.black45, fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ],
-            ),
-
-
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Destination Address: ",
-                  style: TextStyle(
-                      color: Colors.black45, fontWeight: FontWeight.normal),
-                ),
-                Expanded(
-                  child: Text(
-                    lesson.destinationAddress.toString(),
-                    style: TextStyle(
-                        color: Colors.black45, fontWeight: FontWeight.bold),
+                        color: Colors.black45, fontWeight: FontWeight.normal),
                   ),
                 ),
               ],

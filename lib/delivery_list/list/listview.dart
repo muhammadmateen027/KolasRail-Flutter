@@ -54,7 +54,7 @@ class _ListPageState extends State<ListPage> {
   }
 
   Future<Null> _refresh() {
-  return fetchData().then((_user) {
+    return fetchData().then((_user) {
       setState(() => pr = _user);
     });
   }
@@ -66,7 +66,6 @@ class _ListPageState extends State<ListPage> {
       appBar: new AppBar(
         title: Text("Delivery List"),
         backgroundColor: const Color(0xFFff8b54),
-        
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.rotate_left),
@@ -75,11 +74,10 @@ class _ListPageState extends State<ListPage> {
               _refresh();
             },
           ),
-          
           PopupMenuButton<String>(
             onSelected: choiceAction,
-            itemBuilder: (BuildContext context){
-              return choices.map((String choice){
+            itemBuilder: (BuildContext context) {
+              return choices.map((String choice) {
                 return PopupMenuItem<String>(
                   value: choice,
                   child: Text(choice),
@@ -91,7 +89,7 @@ class _ListPageState extends State<ListPage> {
       ),
       backgroundColor: Color.fromRGBO(40, 55, 77, 1.0),
       // drawer: app.appDrawer(context),
-      
+
       body: RefreshIndicator(
         onRefresh: _refresh,
         child: Container(
@@ -106,7 +104,8 @@ class _ListPageState extends State<ListPage> {
                       case ConnectionState.none:
                         return new Text('Input a URL to start');
                       case ConnectionState.waiting:
-                        return new Center(child: new CircularProgressIndicator());
+                        return new Center(
+                            child: new CircularProgressIndicator());
                       case ConnectionState.active:
                         return new Text('');
                       case ConnectionState.done:
@@ -134,16 +133,14 @@ class _ListPageState extends State<ListPage> {
         ),
       ),
     );
-  
   }
 
-  void choiceAction(String choice) async{
-    if(choice == 'Sign out'){
+  void choiceAction(String choice) async {
+    if (choice == 'Sign out') {
       print('SignOut');
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs .setStringList('auth', []);
-      Navigator.of(context)
-        .pushReplacementNamed('/');
+      await prefs.setStringList('auth', []);
+      Navigator.of(context).pushReplacementNamed('/');
     }
   }
 
@@ -193,7 +190,6 @@ class _ListPageState extends State<ListPage> {
     final response = await http.post(BASE_URL + '/api/list', body: logs);
 
     if (response.statusCode == 200) {
-      print("***************List View***********************");
       return Product.fromJson(json.decode(response.body));
     } else {
       // If that call was not successful, throw an error.
@@ -277,14 +273,38 @@ class _ListPageState extends State<ListPage> {
             children: [
               Container(
                 child: Text(
-                  "Origin: ",
+                  "Created By: ",
                   style: TextStyle(
                       color: Colors.black45, fontWeight: FontWeight.normal),
                 ),
               ),
               Container(
                 child: Text(
-                  lesson.originName,
+                  lesson.createBy,
+                  style: TextStyle(
+                      color: Colors.black45, fontWeight: FontWeight.bold),
+                ),
+              ),
+            ],
+          ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                child: Text(
+                  "Origin: ",
+                  style: TextStyle(
+                      color: Colors.black45, fontWeight: FontWeight.normal),
+                ),
+              ),
+              Expanded(
+                child: Text(
+                  lesson.originName +'['+lesson.originCode.toString()+']' +
+                      ', ' +
+                      lesson.originAddress +
+                      ', ' +
+                      lesson.originZip.toString()+ 
+                      ', ' + lesson.originState.toString()+ '.',
                   style: TextStyle(
                       color: Colors.black45, fontWeight: FontWeight.bold),
                 ),
@@ -301,9 +321,34 @@ class _ListPageState extends State<ListPage> {
                       color: Colors.black45, fontWeight: FontWeight.normal),
                 ),
               ),
+              Expanded(
+                child: Text(
+                  lesson.destinationName +'['+lesson.destinationCode.toString()+']' +
+                      ', ' +
+                      lesson.destinationAddress +
+                      ', ' +
+                      lesson.destinationZip.toString()+ 
+                      ', ' + lesson.destinationState.toString()+ '.',
+                  style: TextStyle(
+                      color: Colors.black45, fontWeight: FontWeight.bold),
+                ),
+              ),
+            ],
+          ),
+
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
               Container(
                 child: Text(
-                  lesson.destinationName,
+                  "Created at: ",
+                  style: TextStyle(
+                      color: Colors.black45, fontWeight: FontWeight.normal),
+                ),
+              ),
+              Container(
+                child: Text(
+                  lesson.createdAt,
                   style: TextStyle(
                       color: Colors.black45, fontWeight: FontWeight.bold),
                 ),

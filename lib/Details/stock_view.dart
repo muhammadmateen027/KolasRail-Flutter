@@ -136,6 +136,8 @@ class _ListPageState extends State<StockItemDetail> {
     list.add(widget.args[1]);
     list.add(lesson.rid.toString());
 
+    print("Requested Quantity: " + lesson.app_qty);
+
     return new ListTile(
       contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
       title: Container(
@@ -303,105 +305,106 @@ class _ListPageState extends State<StockItemDetail> {
         ]),
       ),
       // subtitle: Text("Intermediate", style: TextStyle(color: Colors.white)),
-      subtitle: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                child: Text(
-                  "Document: ",
-                  style: TextStyle(
-                      color: Colors.black45, fontWeight: FontWeight.normal),
+      subtitle: Container(
+        width: MediaQuery.of(context).size.width * 0.7,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  child: Text(
+                    "Document: ",
+                    style: TextStyle(
+                        color: Colors.black45, fontWeight: FontWeight.normal),
+                  ),
                 ),
-              ),
-              Container(
-                child: Text(
-                  lesson.document.toString(),
-                  style: TextStyle(
-                      color: Colors.black45, fontWeight: FontWeight.bold),
+                Container(
+                  child: Text(
+                    lesson.document.toString(),
+                    style: TextStyle(
+                        color: Colors.black45, fontWeight: FontWeight.bold),
+                  ),
                 ),
-              ),
-            ],
-          ),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                child: Text(
-                  "Origin Name: ",
-                  style: TextStyle(
-                      color: Colors.black45, fontWeight: FontWeight.normal),
+              ],
+            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  child: Text(
+                    "Origin Name: ",
+                    style: TextStyle(
+                        color: Colors.black45, fontWeight: FontWeight.normal),
+                  ),
                 ),
-              ),
-              Container(
-                child: Text(
-                  lesson.originName.toString(),
-                  style: TextStyle(
-                      color: Colors.black45, fontWeight: FontWeight.bold),
+                Container(
+                  child: Text(
+                    lesson.originName.toString(),
+                    style: TextStyle(
+                        color: Colors.black45, fontWeight: FontWeight.bold),
+                  ),
                 ),
-              ),
-            ],
-          ),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                child: Text(
-                  "Destination: ",
-                  style: TextStyle(
-                      color: Colors.black45, fontWeight: FontWeight.normal),
+              ],
+            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  child: Text(
+                    "Destination: ",
+                    style: TextStyle(
+                        color: Colors.black45, fontWeight: FontWeight.normal),
+                  ),
                 ),
-              ),
-              Container(
-                child: Text(
-                  lesson.destinationName.toString(),
-                  style: TextStyle(
-                      color: Colors.black45, fontWeight: FontWeight.bold),
+                Container(
+                  child: Text(
+                    lesson.destinationName.toString(),
+                    style: TextStyle(
+                        color: Colors.black45, fontWeight: FontWeight.bold),
+                  ),
                 ),
-              ),
-            ],
-          ),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                child: Text(
-                  "Destination Address: ",
-                  style: TextStyle(
-                      color: Colors.black45, fontWeight: FontWeight.normal),
-                ),
-              ),
-              Container(
-                child: Text(
-                  lesson.destinationAddress.toString(),
-                  style: TextStyle(
-                      color: Colors.black45, fontWeight: FontWeight.bold),
-                ),
-              ),
-            ],
-          ),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                child: Text(
+              ],
+            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
                   "Origin Address: ",
                   style: TextStyle(
                       color: Colors.black45, fontWeight: FontWeight.normal),
                 ),
-              ),
-              Container(
-                child: Text(
-                  lesson.originAddress.toString(),
-                  style: TextStyle(
-                      color: Colors.black45, fontWeight: FontWeight.bold),
+                Expanded(
+                  child: Text(
+                    lesson.originAddress.toString(),
+                    style: TextStyle(
+                        color: Colors.black45, fontWeight: FontWeight.bold),
+                  ),
                 ),
-              ),
-            ],
-          ),
-        ],
+              ],
+            ),
+
+
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Destination Address: ",
+                  style: TextStyle(
+                      color: Colors.black45, fontWeight: FontWeight.normal),
+                ),
+                Expanded(
+                  child: Text(
+                    lesson.destinationAddress.toString(),
+                    style: TextStyle(
+                        color: Colors.black45, fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
 
       // onTap: () =>

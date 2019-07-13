@@ -30,6 +30,10 @@ class _ListPageState extends State<ListPage> {
   var logs;
   List lessons;
   AppBackground app = new AppBackground();
+
+  final List<String> choices = <String>[
+    'Sign out',
+  ];
   // ListItems lItem = new ListItems();
   List<Product> items = List();
 
@@ -62,13 +66,25 @@ class _ListPageState extends State<ListPage> {
       appBar: new AppBar(
         title: Text("Delivery List"),
         backgroundColor: const Color(0xFFff8b54),
-
+        
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.rotate_left),
             color: Color(0xFFFFFFFF),
             onPressed: () {
               _refresh();
+            },
+          ),
+          
+          PopupMenuButton<String>(
+            onSelected: choiceAction,
+            itemBuilder: (BuildContext context){
+              return choices.map((String choice){
+                return PopupMenuItem<String>(
+                  value: choice,
+                  child: Text(choice),
+                );
+              }).toList();
             },
           )
         ],
@@ -119,6 +135,16 @@ class _ListPageState extends State<ListPage> {
       ),
     );
   
+  }
+
+  void choiceAction(String choice) async{
+    if(choice == 'Sign out'){
+      print('SignOut');
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs .setStringList('auth', []);
+      Navigator.of(context)
+        .pushReplacementNamed('/');
+    }
   }
 
   //Top App bar with Right Icon

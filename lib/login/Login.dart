@@ -141,18 +141,18 @@ class LoginState extends State<LoginPageContent> {
                       ),
                     )),
               ),
-              Padding(
-                padding:
-                    const EdgeInsets.only(left: 20.0, right: 20.0, top: 10.0),
-                child: new Container(
-                  alignment: Alignment.center,
-                  height: 60.0,
-                  child: new Text(
-                    "Forgot password?",
-                    style: new TextStyle(fontSize: 17.0, color: Colors.black54),
-                  ),
-                ),
-              )
+              // Padding(
+              //   padding:
+              //       const EdgeInsets.only(left: 20.0, right: 20.0, top: 10.0),
+              //   child: new Container(
+              //     alignment: Alignment.center,
+              //     height: 60.0,
+              //     child: new Text(
+              //       "Forgot password?",
+              //       style: new TextStyle(fontSize: 17.0, color: Colors.black54),
+              //     ),
+              //   ),
+              // )
             ],
           ),
         )

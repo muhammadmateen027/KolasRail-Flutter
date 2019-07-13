@@ -218,6 +218,7 @@ class _ListPageState extends State<ListPage> {
     list.add(email);
     list.add(password);
     list.add(lesson.reqId.toString());
+    list.add(lesson.reqStatus.toString());
 
     if (lesson.reqStatus == 3) {
       color = 0xFFff8b54;
@@ -363,7 +364,7 @@ class _ListPageState extends State<ListPage> {
   }
 
   void pushToActivity(BuildContext context, List<String> list) {
-    Navigator.of(context).pushNamed('/stockList', arguments: list);
+    Navigator.of(context).pushNamed('/stockList', arguments: list,);
   }
 
   Stack getSmallTick(int reqStatus) {

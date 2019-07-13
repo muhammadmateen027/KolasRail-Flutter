@@ -16,8 +16,27 @@ class _ListPageState extends State<StockItemDetail> {
   List<String> list;
   var logs;
   AppBackground app = new AppBackground();
+  Color _color = Colors.green;
 
   String buttonName = "Confirm Delivery";
+
+  bool buttonState = true;
+
+  void _buttonChange() {
+    _changeStates();
+    logs["status"] = "5";
+    _serverUpdate(body: logs);
+  }
+
+  void _changeStates() {
+    setState(() {
+      buttonState = false;
+      buttonName = "Delivered";
+      _color = Colors.grey;
+    });
+
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +49,9 @@ class _ListPageState extends State<StockItemDetail> {
     logs["password"] = widget.args[1];
     logs["req_id"] = widget.args[2];
 
-    print(widget.args[2]);
+    print("ReqStat: "+widget.args[3]);
+
+    if(widget.args[3] == "5") _changeStates();
     // TODO: implement build
     return Scaffold(
       appBar: new AppBar(
@@ -42,13 +63,15 @@ class _ListPageState extends State<StockItemDetail> {
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          logs["status"] = "5";
-          _serverUpdate(body: logs);
-        },
+        onPressed: buttonState ? _buttonChange : null,
+        // onPressed: () {
+        //   logs["status"] = "5";
+        //   _serverUpdate(body: logs);
+        // },
+
         icon: Icon(Icons.local_shipping),
         label: Text(buttonName),
-        backgroundColor: Colors.green,
+        backgroundColor: _color,
       ),
       backgroundColor: Color.fromRGBO(40, 55, 77, 1.0),
       body: Container(
@@ -283,8 +306,12 @@ class _ListPageState extends State<StockItemDetail> {
   }
 
   ListTile getHeadings(Stock lesson) {
+    // if (lesson.reqStatus == 5) {
+    //   _changeStates();
+    // }
     print("Request Stat: " + lesson.reqStatus.toString());
-    logs["status"] = "5";
+
+    // logs["status"] = "5";
     return new ListTile(
       contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
       title: Container(
@@ -316,26 +343,6 @@ class _ListPageState extends State<StockItemDetail> {
               children: [
                 Container(
                   child: Text(
-                    "Created By: ",
-                    style: TextStyle(
-                        color: Colors.black45, fontWeight: FontWeight.bold),
-                  ),
-                ),
-                Container(
-                  child: Text(
-                    lesson.createBy.toString(),
-                    style: TextStyle(
-                        color: Colors.black45, fontWeight: FontWeight.normal),
-                  ),
-                ),
-              ],
-            ),
-
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  child: Text(
                     "Document: ",
                     style: TextStyle(
                         color: Colors.black45, fontWeight: FontWeight.bold),
@@ -350,7 +357,25 @@ class _ListPageState extends State<StockItemDetail> {
                 ),
               ],
             ),
-
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  child: Text(
+                    "Created By: ",
+                    style: TextStyle(
+                        color: Colors.black45, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Container(
+                  child: Text(
+                    lesson.createBy.toString(),
+                    style: TextStyle(
+                        color: Colors.black45, fontWeight: FontWeight.normal),
+                  ),
+                ),
+              ],
+            ),
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -363,19 +388,23 @@ class _ListPageState extends State<StockItemDetail> {
                 ),
                 Expanded(
                   child: Text(
-                    lesson.originName.toString() +'['+lesson.originCode.toString()+']' +
-                      ', ' +
-                      lesson.originAddress +
-                      ', ' +
-                      lesson.originZip.toString()+ 
-                      ', ' + lesson.originState.toString()+ '.',
+                    lesson.originName.toString() +
+                        '[' +
+                        lesson.originCode.toString() +
+                        ']' +
+                        ', ' +
+                        lesson.originAddress +
+                        ', ' +
+                        lesson.originZip.toString() +
+                        ', ' +
+                        lesson.originState.toString() +
+                        '.',
                     style: TextStyle(
                         color: Colors.black45, fontWeight: FontWeight.normal),
                   ),
                 ),
               ],
             ),
-
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -388,19 +417,23 @@ class _ListPageState extends State<StockItemDetail> {
                 ),
                 Expanded(
                   child: Text(
-                    lesson.destinationName +'['+lesson.destinationCode.toString()+']' +
-                      ', ' +
-                      lesson.destinationAddress +
-                      ', ' +
-                      lesson.destinationZip.toString()+ 
-                      ', ' + lesson.destinationState.toString()+ '.',
+                    lesson.destinationName +
+                        '[' +
+                        lesson.destinationCode.toString() +
+                        ']' +
+                        ', ' +
+                        lesson.destinationAddress +
+                        ', ' +
+                        lesson.destinationZip.toString() +
+                        ', ' +
+                        lesson.destinationState.toString() +
+                        '.',
                     style: TextStyle(
                         color: Colors.black45, fontWeight: FontWeight.normal),
                   ),
                 ),
               ],
             ),
-
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -432,11 +465,11 @@ class _ListPageState extends State<StockItemDetail> {
   _serverUpdate({Map body}) async {
     final response = await http.post(BASE_URL + '/api/update', body: body);
     if (response.statusCode == 200) {
-      print(response.body);
-      setState(() {
-        buttonName = "Delivered";
-        // Navigator.of(context).pop();
-      });
+      // print(response.body);
+      // setState(() {
+      //   buttonName = "Delivered";
+      //   // Navigator.of(context).pop();
+      // });
       // _createToast('Delivery confirmed.');
       return User.fromJson(json.decode(response.body));
     } else {

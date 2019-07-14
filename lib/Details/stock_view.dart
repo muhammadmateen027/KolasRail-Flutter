@@ -381,7 +381,7 @@ class _ListPageState extends State<StockItemDetail> {
               children: [
                 Container(
                   child: Text(
-                    "Origin Name: ",
+                    "Origin: ",
                     style: TextStyle(
                         color: Colors.black45, fontWeight: FontWeight.bold),
                   ),

@@ -61,6 +61,18 @@ class _ListPageState extends State<StockItemDetail> {
           icon: Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
         ),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.email),
+            color: Color(0xFFFFFFFF),
+            onPressed: () {
+              List<String> emptyList = new List<String>();
+              emptyList.add("Hello");
+              Navigator.of(context).
+              pushReplacementNamed("/detailPage", arguments: emptyList);
+            },
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: buttonState ? _buttonChange : null,

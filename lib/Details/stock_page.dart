@@ -224,6 +224,7 @@ class _ListPageState extends State<StockItemDetail> {
             children: [
               Container(
                 child: Text(
+
                   "Approved Quantity: ",
                   style: TextStyle(
                       color: Colors.black45, fontWeight: FontWeight.normal),
@@ -231,7 +232,7 @@ class _ListPageState extends State<StockItemDetail> {
               ),
               Container(
                 child: Text(
-                  lesson.app_qty.toString(),
+                  lesson.appQty.toString(),
                   style: TextStyle(
                       color: Colors.black45, fontWeight: FontWeight.bold),
                 ),
@@ -250,7 +251,7 @@ class _ListPageState extends State<StockItemDetail> {
               ),
               Container(
                 child: Text(
-                  lesson.app_comment.toString(),
+                  lesson.appComment.toString(),
                   style: TextStyle(
                       color: Colors.black45, fontWeight: FontWeight.bold),
                 ),

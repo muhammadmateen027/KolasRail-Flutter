@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:kolas_rail/model/stock_items.dart';
 import '../constants/stacked_icons.dart';
@@ -45,6 +48,8 @@ class ScanPageContent extends StatefulWidget {
 }
 
 class ScanningState extends State<ScanPageContent> {
+  File file;
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -179,6 +184,7 @@ class ScanningState extends State<ScanPageContent> {
                   
                   //`Text` to display
                   onPressed: () {
+                    _choose();
                     //Code to execute when Floating Action Button is clicked
                     //...
                   },
@@ -189,5 +195,28 @@ class ScanningState extends State<ScanPageContent> {
         )
       ],
     );
+  }
+
+  void _choose() async {
+    file = await ImagePicker.pickImage(source: ImageSource.camera);
+// file = await ImagePicker.pickImage(source: ImageSource.gallery);
+  }
+
+  void _upload() {
+    if (file == null) return;
+    String base64Image = base64Encode(file.readAsBytesSync());
+    String fileName = file.path.split("/").last;
+
+    print("Image Name: " + fileName.toString());
+    print("Image Base64: " + base64Image.toString());
+
+//    http.post(phpEndPoint, body: {
+//      "image": base64Image,
+//      "name": fileName,
+//    }).then((res) {
+//      print(res.statusCode);
+//    }).catchError((err) {
+//      print(err);
+//    });
   }
 }

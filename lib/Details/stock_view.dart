@@ -22,10 +22,12 @@ class _ListPageState extends State<StockItemDetail> {
 
   bool buttonState = true;
 
-  void _buttonChange() {
-    _changeStates();
-    logs["status"] = "5";
-    _serverUpdate(body: logs);
+  void _buttonChange() async {
+    // _changeStates();
+    // logs["status"] = "5";
+    Navigator.of(context).
+              pushNamed("/detailPage", arguments: list);
+    // _serverUpdate(body: logs);
   }
 
   void _changeStates() {
@@ -43,13 +45,12 @@ class _ListPageState extends State<StockItemDetail> {
     list = new List();
     list.add(widget.args[0].toString());
     list.add(widget.args[1].toString());
+    list.add(widget.args[2].toString());
 
     logs = new Map<String, dynamic>();
     logs["email"] = widget.args[0];
     logs["password"] = widget.args[1];
     logs["req_id"] = widget.args[2];
-
-    print("ReqStat: "+widget.args[3]);
 
     if(widget.args[3] == "5") _changeStates();
     // TODO: implement build
@@ -61,18 +62,16 @@ class _ListPageState extends State<StockItemDetail> {
           icon: Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
         ),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.email),
-            color: Color(0xFFFFFFFF),
-            onPressed: () {
-              List<String> emptyList = new List<String>();
-              emptyList.add("Hello");
-              Navigator.of(context).
-              pushReplacementNamed("/detailPage", arguments: emptyList);
-            },
-          ),
-        ],
+        // actions: <Widget>[
+        //   IconButton(
+        //     icon: Icon(Icons.email),
+        //     color: Color(0xFFFFFFFF),
+        //     onPressed: () {
+        //       Navigator.of(context).
+        //       pushReplacementNamed("/detailPage", arguments: list);
+        //     },
+        //   ),
+        // ],
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: buttonState ? _buttonChange : null,
@@ -166,10 +165,10 @@ class _ListPageState extends State<StockItemDetail> {
   }
 
   ListTile getTile(BuildContext context, Success lesson) {
-    List<String> list = new List();
-    list.add(widget.args[0]);
-    list.add(widget.args[1]);
-    list.add(lesson.rid.toString());
+    // List<String> list = new List();
+    // list.add(widget.args[0]);
+    // list.add(widget.args[1]);
+    // list.add(lesson.rid.toString());
 
     print("Requested Quantity: " + lesson.appQty);
 

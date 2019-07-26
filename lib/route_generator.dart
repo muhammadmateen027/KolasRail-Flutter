@@ -34,7 +34,7 @@ class RouteGenerator {
         if (args is List<String>) {
           return MaterialPageRoute(
               builder: (_) => DetailPage(
-                    list: args,
+                    logsList : args,
                   ));
         } else {
           print("Type is not confimed:" + args.toString());

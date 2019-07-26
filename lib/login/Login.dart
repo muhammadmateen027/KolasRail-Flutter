@@ -82,10 +82,9 @@ class LoginState extends State<LoginPageContent> {
         // _progressHUD,
         // new StackedIcons(),
         Container(
-          height: 90,
-          width: 90,
-          child: Image.asset('assets/kolas_logo.jpeg')
-        ),
+            height: 90,
+            width: 90,
+            child: Image.asset('assets/kolas_logo.jpeg')),
 
         new AppName(),
         new Container(
@@ -188,9 +187,6 @@ class LoginState extends State<LoginPageContent> {
         _createToast('Email and password mismatch.');
       }
     });
-
-    // Navigator.pop(context);
-    // _navigateNext(email, password);
   }
 
   _createToast(String msg) {

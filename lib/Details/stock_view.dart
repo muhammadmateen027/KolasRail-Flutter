@@ -5,6 +5,7 @@ import 'package:kolas_rail/model/stock_items.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:kolas_rail/model/usermodel.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 
 class StockItemDetail extends StatefulWidget {
   final List<String> args;
@@ -25,8 +26,7 @@ class _ListPageState extends State<StockItemDetail> {
   void _buttonChange() async {
     // _changeStates();
     // logs["status"] = "5";
-    Navigator.of(context).
-              pushNamed("/detailPage", arguments: list);
+    Navigator.of(context).pushNamed("/detailPage", arguments: list);
     // _serverUpdate(body: logs);
   }
 
@@ -36,8 +36,6 @@ class _ListPageState extends State<StockItemDetail> {
       buttonName = "Delivered";
       _color = Colors.grey;
     });
-
-
   }
 
   @override
@@ -52,7 +50,7 @@ class _ListPageState extends State<StockItemDetail> {
     logs["password"] = widget.args[1];
     logs["req_id"] = widget.args[2];
 
-    if(widget.args[3] == "5") _changeStates();
+    if (widget.args[3] == "5") _changeStates();
     // TODO: implement build
     return Scaffold(
       appBar: new AppBar(
@@ -67,8 +65,8 @@ class _ListPageState extends State<StockItemDetail> {
         //     icon: Icon(Icons.email),
         //     color: Color(0xFFFFFFFF),
         //     onPressed: () {
-        //       Navigator.of(context).
-        //       pushReplacementNamed("/detailPage", arguments: list);
+        //       Navigator.of(context)
+        //           .pushNamed("/detailPage", arguments: list);
         //     },
         //   ),
         // ],

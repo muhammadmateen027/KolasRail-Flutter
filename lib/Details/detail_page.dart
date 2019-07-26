@@ -7,6 +7,7 @@ import 'package:kolas_rail/model/stock_items.dart';
 import 'package:http/http.dart' as http;
 import '../constants/stacked_icons.dart';
 import 'package:kolas_rail/model/usermodel.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 // https://github.com/fabiomsr/Flutter-StepByStep
 // https://proandroiddev.com/flutter-thursday-02-beautiful-list-ui-and-detail-page-a9245f5ceaf0
 
@@ -17,6 +18,7 @@ class DetailPage extends StatefulWidget {
 }
 
 class _DetailPageClass extends State<DetailPage> {
+  ProgressDialog pr;
   File _image = null;
   AppBackground app = new AppBackground();
   final String title = "Scan & Sign";
@@ -29,6 +31,8 @@ class _DetailPageClass extends State<DetailPage> {
 
   @override
   Widget build(BuildContext context) {
+    pr = new ProgressDialog(context, ProgressDialogType.Normal);
+    pr.setMessage('Please wait…');
     // TODO: implement build
     return new Scaffold(
       appBar: AppBar(
@@ -36,11 +40,10 @@ class _DetailPageClass extends State<DetailPage> {
         backgroundColor: const Color(0xFFff8b54),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
-          onPressed: () => _popBack,
+          onPressed: () => _popBack(),
         ),
       ),
       backgroundColor: Color.fromRGBO(40, 55, 77, 1.0),
-      
       body: Container(
         // Add box decoration
         decoration: app.appBackground(),
@@ -133,7 +136,7 @@ class _DetailPageClass extends State<DetailPage> {
                           padding: const EdgeInsets.only(
                               left: 20.0, right: 20.0, top: 15.0, bottom: 15.0),
                           child: GestureDetector(
-                              onTap: () => _popBack,
+                              onTap: () => _popBack(),
                               child: Container(
                                 alignment: Alignment.center,
                                 height: 60.0,
@@ -189,7 +192,13 @@ class _DetailPageClass extends State<DetailPage> {
 
                           //`Text` to display
                           onPressed: () {
-                            _choose();
+                            _choose().then((image) {
+                              image.path;
+                              setState(() {
+                                _image = image;
+                                pr.hide();
+                              });
+                            });
                             //Code to execute when Floating Action Button is clicked
                             //...
                           },
@@ -207,12 +216,8 @@ class _DetailPageClass extends State<DetailPage> {
   }
 
   Future<File> _choose() async {
+    pr.show();
     File image = await ImagePicker.pickImage(source: ImageSource.camera);
-    image.path;
-
-    setState(() {
-      _image = image;
-    });
     return image;
 // file = await ImagePicker.pickImage(source: ImageSource.gallery);
   }
@@ -232,11 +237,13 @@ class _DetailPageClass extends State<DetailPage> {
     logs["image"] = base64Image;
     logs["status"] = "5";
 
-  _serverUpdate(body: logs).then((onValue) {
-    if(onValue.success == 'true')
-      _popBack();
-    else print(onValue.toString());
-  });
+    _serverUpdate(body: logs).then((onValue) {
+      pr.hide();
+      if (onValue.success == 'true')
+        _popBack();
+      else
+        print(onValue.toString());
+    });
 //    http.post(phpEndPoint, body: {
 //      "image": base64Image,
 //      "name": fileName,
@@ -247,7 +254,8 @@ class _DetailPageClass extends State<DetailPage> {
 //    });
   }
 
-  Future<User>_serverUpdate({Map body}) async {
+  Future<User> _serverUpdate({Map body}) async {
+    pr.show();
     final response = await http.post(BASE_URL + '/api/update', body: body);
     if (response.statusCode == 200) {
       // print(response.body);

@@ -84,7 +84,7 @@ class LoginState extends State<LoginPageContent> {
         Container(
             height: 90,
             width: 90,
-            child: Image.asset('assets/kolas_logo.jpeg')),
+            child: Image.asset('assets/playstore-icon.png')),
 
         new AppName(),
         new Container(

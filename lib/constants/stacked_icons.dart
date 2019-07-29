@@ -84,7 +84,7 @@ class AppName extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(top: 8.0, bottom: 30.0),
           child: new Text(
-            "Kolas Rail",
+            "CRSE Sdn Bhd",
             style: new TextStyle(
               fontSize: 30.0,
             ),

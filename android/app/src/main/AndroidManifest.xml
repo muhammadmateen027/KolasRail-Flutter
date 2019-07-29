@@ -1,6 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.kolas_rail">
+    package="com.nubeslab.kolas_rail">
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.CAMERA" />
+
 <!--    <uses-permission android:name="android.permission.android."-->
 
     <!-- io.flutter.app.FlutterApplication is an android.app.Application that
@@ -10,7 +12,7 @@
          FlutterApplication and put your custom class here. -->
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="kolas_rail"
+        android:label="CRSE Sdn Bhd"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

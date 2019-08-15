@@ -224,7 +224,7 @@ class _ListPageState extends State<ListPage> {
       color = 0xFFff8b54;
       status = "Pending";
     } else {
-      status = "Received";
+      status = "Delivered";
       color = 0xFF009933;
     }
     return new ListTile(

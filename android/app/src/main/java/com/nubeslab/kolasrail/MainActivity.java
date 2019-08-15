@@ -1,4 +1,4 @@
-package com.example.kolas_rail;
+package com.nubeslab.kolasrail;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;

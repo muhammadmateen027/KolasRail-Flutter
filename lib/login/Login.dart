@@ -104,6 +104,9 @@ class LoginState extends State<LoginPageContent> {
                     const EdgeInsets.symmetric(horizontal: 20.0, vertical: 0.0),
                 child: new TextField(
                   controller: _emailtextController,
+                  onChanged: (text) {
+                    _emailtextController.text = text;
+                  },
                   decoration: new InputDecoration(labelText: 'Email'),
                 ),
               ),
@@ -115,6 +118,9 @@ class LoginState extends State<LoginPageContent> {
                     const EdgeInsets.symmetric(horizontal: 20.0, vertical: 0.0),
                 child: new TextField(
                   controller: _passwodtextController,
+                  onChanged: (text) {
+                    _passwodtextController.text = text;
+                  },
                   obscureText: true,
                   decoration: new InputDecoration(labelText: 'Password'),
                 ),
@@ -125,8 +131,8 @@ class LoginState extends State<LoginPageContent> {
                 child: GestureDetector(
                     onTap: () => _onLoginTapped(
                         context,
-                        _emailtextController.text.toLowerCase(),
-                        _passwodtextController.text.toLowerCase()),
+                        _emailtextController.text,
+                        _passwodtextController.text),
                     child: Container(
                       alignment: Alignment.center,
                       height: 60.0,
@@ -197,8 +203,11 @@ class LoginState extends State<LoginPageContent> {
   }
 
   Future<User> _serverLogin({Map body}) async {
-    final response = await http.post(BASE_URL + '/api/login', body: body);
+    print('Body: ' +body.toString());
+    final response = await http.post('https://colas-wms.nebula.nubeslab.tech/api/login', body: body);
     ProgressHud.of(context).dismiss();
+
+    print('Response Code:' + response.statusCode.toString());
     if (response.statusCode == 200) {
       return User.fromJson(json.decode(response.body));
     } else {

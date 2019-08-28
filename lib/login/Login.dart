@@ -104,9 +104,7 @@ class LoginState extends State<LoginPageContent> {
                     const EdgeInsets.symmetric(horizontal: 20.0, vertical: 0.0),
                 child: new TextField(
                   controller: _emailtextController,
-                  onChanged: (text) {
-                    _emailtextController.text = text;
-                  },
+
                   decoration: new InputDecoration(labelText: 'Email'),
                 ),
               ),
@@ -118,9 +116,7 @@ class LoginState extends State<LoginPageContent> {
                     const EdgeInsets.symmetric(horizontal: 20.0, vertical: 0.0),
                 child: new TextField(
                   controller: _passwodtextController,
-                  onChanged: (text) {
-                    _passwodtextController.text = text;
-                  },
+
                   obscureText: true,
                   decoration: new InputDecoration(labelText: 'Password'),
                 ),
